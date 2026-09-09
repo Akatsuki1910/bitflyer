@@ -59,8 +59,11 @@ def build_verdict(rows: list[dict], mc: list[dict], n_days: int) -> str:
     bonf = 0.05 / max(n, 1)
     survivors = [m for m in mc if m["p"] < bonf]
 
+    n_strategies = len({r["name"] for r in tested})
+    n_symbols = len({r["sym"] for r in tested})
     items = [
-        f"検証した組み合わせ <b>{n}通り</b>（{len(st.CATALOG)-1}戦略 × 3銘柄、買い持ちを除く）",
+        f"検証した組み合わせ <b>{n}通り</b>"
+        f"（{n_strategies}戦略 × {n_symbols}銘柄、買い持ちを除く）",
         f"売買コストを払った後で黒字だったのは <b>{len(profitable)}通り（{len(profitable)/max(n,1)*100:.0f}%）</b>",
         f"買い持ちに勝ったのは <b>{len(beat)}通り</b>",
     ]
