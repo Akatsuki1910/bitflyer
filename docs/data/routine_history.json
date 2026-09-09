@@ -11,5 +11,79 @@
     "n_trades": 0,
     "summary": "手動のルーティン: 3銘柄 × 9戦略を判定、0件約定、ニュース23件",
     "standings": []
+  },
+  {
+    "ran_at": "2026-09-10T00:29:30.779035+09:00",
+    "slot": "manual",
+    "run_id": 1,
+    "prices": {
+      "BTC": 12047647.5,
+      "ETH": 381212.5,
+      "BAT": 11.69
+    },
+    "n_trades": 16,
+    "summary": "手動のルーティン: 3銘柄 × 9戦略を判定、16件約定、ニュース22件。首位は BAT 100日線より上で保有 (+0.00%)",
+    "standings": [
+      {
+        "symbol": "BAT",
+        "strategy": "100日線より上で保有",
+        "holding": false,
+        "cash": 1000000.0,
+        "qty": 0.0,
+        "equity": 1000000.0,
+        "total_return": 0.0,
+        "n_trades": 0,
+        "realized_pnl": 0.0,
+        "cost_paid": 0.0
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "3か月モメンタム",
+        "holding": false,
+        "cash": 1000000.0,
+        "qty": 0.0,
+        "equity": 1000000.0,
+        "total_return": 0.0,
+        "n_trades": 0,
+        "realized_pnl": 0.0,
+        "cost_paid": 0.0
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "SMA 50/100 クロス",
+        "holding": false,
+        "cash": 1000000.0,
+        "qty": 0.0,
+        "equity": 1000000.0,
+        "total_return": 0.0,
+        "n_trades": 0,
+        "realized_pnl": 0.0,
+        "cost_paid": 0.0
+      },
+      {
+        "symbol": "BTC",
+        "strategy": "MACD 12/26/9",
+        "holding": false,
+        "cash": 1000000.0,
+        "qty": 0.0,
+        "equity": 1000000.0,
+        "total_return": 0.0,
+        "n_trades": 0,
+        "realized_pnl": 0.0,
+        "cost_paid": 0.0
+      },
+      {
+        "symbol": "BTC",
+        "strategy": "RSI14 逆張り(30/70)",
+        "holding": false,
+        "cash": 1000000.0,
+        "qty": 0.0,
+        "equity": 1000000.0,
+        "total_return": 0.0,
+        "n_trades": 0,
+        "realized_pnl": 0.0,
+        "cost_paid": 0.0
+      }
+    ]
   }
 ]
