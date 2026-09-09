@@ -109,6 +109,7 @@ function table(head, rows){
 const state = {};
 const TABS = [
   ["overview","いま"],
+  ["commentary","Claudeの見立て"],
   ["standings","口座の成績"],
   ["trades","約定履歴"],
   ["signals","判断と根拠"],
@@ -253,6 +254,46 @@ views.sources = async () => {
       <td><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></td>
       <td><span class="pill ${s.api?"hold":"flat"}">${s.api?"自動":"目視"}</span></td>
       <td class="why">${esc(s.purpose||"")}${s.note?`<br>※ ${esc(s.note)}`:""}</td></tr>`));
+  return h;
+};
+
+views.commentary = async () => {
+  // 見立てだけは Supabase ではなくリポジトリ内の静的ファイル。
+  // Claude Code の定期タスクが書き出して commit している。
+  let c = null;
+  try{
+    const r = await fetch("data/commentary.json?t=" + Date.now());
+    if(r.ok) c = await r.json();
+  }catch(e){ /* 未生成なら下の案内を出す */ }
+
+  if(!c) return `<h2>Claudeの見立て</h2>
+    <p class="loading">まだ生成されていません。<br>
+    Claude Code の定期タスク「bitflyer 見立て」が走ると、ここに考察が入ります。</p>`;
+
+  const stale = c.generated_at
+    ? (Date.now() - new Date(c.generated_at)) / 3600000 : null;
+  let h = `<h2>${esc(c.headline || "見立て")}</h2>`;
+  h += `<p class="sub">${esc(dt(c.generated_at))} 時点${c.model?" ／ "+esc(c.model):""}`
+     + (stale!=null && stale > 30 ? ` ／ <span class="down">${Math.floor(stale/24)}日前の内容です</span>` : "")
+     + `</p>`;
+
+  if(c.stance) h += `<div class="cards"><div class="card"><div class="k">全体の見方</div>
+    <div class="v" style="font-size:1.05rem">${esc(c.stance)}</div></div></div>`;
+
+  for(const sec of (c.sections || [])){
+    h += `<h2>${esc(sec.title || "")}</h2><p class="why">${esc(sec.body || "").split("\n").join("<br>")}</p>`;
+  }
+
+  if((c.watchlist || []).length){
+    h += "<h2>次に見るところ</h2><ul class=\"why\">";
+    for(const w of c.watchlist) h += `<li>${esc(w)}</li>`;
+    h += "</ul>";
+  }
+
+  h += `<p class="sub" style="margin-top:24px">
+    この欄だけは Claude が書いた解釈です。売買判断そのものは
+    <code>src/strategies.py</code> の計算式が決めており、ここの文章は一切影響しません。
+    投資助言ではありません。</p>`;
   return h;
 };
 
