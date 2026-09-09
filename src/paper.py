@@ -68,16 +68,33 @@ class PaperBroker:
         return self._cache
 
     def ensure(self, symbol: str, strategy: str) -> Account:
+        """口座を取り出す。無ければ元手を入れて新規に開く。
+
+        既存口座を upsert で作り直すと残高が初期化されてしまうので、
+        必ず「探してから、無ければ作る」順で扱う。
+        """
         key = (symbol, strategy)
         if key in self._cache:
             return self._cache[key]
-        rows = self.sb.insert(
-            "bf_paper_accounts",
-            {"symbol": symbol, "strategy": strategy,
-             "initial_capital": self.initial_capital,
-             "cash": self.initial_capital, "qty": 0, "realized_pnl": 0,
-             "cost_paid": 0, "n_trades": 0},
-            upsert_on="symbol,strategy")
+
+        rows = self.sb.select("bf_paper_accounts", select="*",
+                              symbol=f"eq.{symbol}", strategy=f"eq.{strategy}",
+                              limit="1")
+        if not rows:
+            try:
+                rows = self.sb.insert(
+                    "bf_paper_accounts",
+                    {"symbol": symbol, "strategy": strategy,
+                     "initial_capital": self.initial_capital,
+                     "cash": self.initial_capital, "qty": 0, "realized_pnl": 0,
+                     "cost_paid": 0, "n_trades": 0})
+            except Exception:
+                # 同時実行でかち合った場合は、相手が作ったものを読み直す
+                rows = self.sb.select("bf_paper_accounts", select="*",
+                                      symbol=f"eq.{symbol}",
+                                      strategy=f"eq.{strategy}", limit="1")
+                if not rows:
+                    raise
         acc = Account.from_row(rows[0])
         self._cache[key] = acc
         return acc
