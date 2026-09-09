@@ -147,7 +147,9 @@ def main() -> int:
 
     # ---------------------------------------------------------------- 2. 履歴
     log("日足の履歴を取得")
-    hist = datamod.load_all(days=args.days, force=True)
+    # 日足は日中変わらないので、12時間以内のキャッシュがあればそれを使う
+    # (朝→昼→晩で3回叩くと CoinGecko の無料枠に引っかかるため)
+    hist = datamod.load_all(days=args.days)
     series = {s: build_series(s, hist[s], market[s]["price"]) for s in market}
 
     # ---------------------------------------------------------------- 3. run 作成

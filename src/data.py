@@ -57,19 +57,31 @@ def _get_json(url: str, retries: int = 4, pause: float = 12.0):
     raise RuntimeError(f"取得失敗: {url} ({last})")
 
 
-def fetch_prices(symbol: str, days: int = 365, force: bool = False) -> pd.DataFrame:
-    """JPY建ての日次終値を DataFrame(date, close) で返す。ローカルにキャッシュする。"""
+def fetch_prices(symbol: str, days: int = 365, force: bool = False,
+                 max_age_h: float = 12.0) -> pd.DataFrame:
+    """JPY建ての日次終値を DataFrame(date, close) で返す。ローカルにキャッシュする。
+
+    日足は1日の中で動かないので、max_age_h 以内のキャッシュはそのまま使う。
+    CoinGecko の無料枠はレート制限が厳しく、取得に失敗することがある。
+    その場合は古いキャッシュがあればそれを使う。少し古い履歴で回すほうが、
+    ルーティンごと止まるよりましなので。
+    """
     cache = DATA_DIR / f"{symbol}_JPY_{days}d.csv"
-    if cache.exists() and not force:
-        age_h = (time.time() - cache.stat().st_mtime) / 3600
-        if age_h < 12:
-            df = pd.read_csv(cache, parse_dates=["date"])
-            return df
+    age_h = ((time.time() - cache.stat().st_mtime) / 3600) if cache.exists() else None
+
+    if age_h is not None and not force and age_h < max_age_h:
+        return pd.read_csv(cache, parse_dates=["date"])
 
     coin_id = COINS[symbol]
     url = f"{CG_BASE}/coins/{coin_id}/market_chart?vs_currency=jpy&days={days}&interval=daily"
     print(f"取得中: {symbol}/JPY 直近{days}日 ...")
-    raw = _get_json(url)
+    try:
+        raw = _get_json(url)
+    except Exception as e:  # noqa: BLE001
+        if age_h is not None:
+            print(f"  取得失敗のため {age_h:.1f}時間前のキャッシュを使う ({symbol}): {e}")
+            return pd.read_csv(cache, parse_dates=["date"])
+        raise
 
     rows = [
         {
@@ -86,12 +98,18 @@ def fetch_prices(symbol: str, days: int = 365, force: bool = False) -> pd.DataFr
     return df
 
 
-def load_all(days: int = 365, force: bool = False) -> dict[str, pd.DataFrame]:
+def load_all(days: int = 365, force: bool = False,
+             max_age_h: float = 12.0) -> dict[str, pd.DataFrame]:
     out = {}
-    for i, sym in enumerate(COINS):
-        if i:
-            time.sleep(2.5)  # 無料枠のレート制限対策
-        out[sym] = fetch_prices(sym, days=days, force=force)
+    fetched = 0
+    for sym in COINS:
+        if fetched:
+            # 実際に API を叩いたときだけ間を空ける(キャッシュ命中なら待たない)
+            time.sleep(6.0)
+        before = time.time()
+        out[sym] = fetch_prices(sym, days=days, force=force, max_age_h=max_age_h)
+        if time.time() - before > 0.3:   # ネットワークに行った
+            fetched += 1
     return out
 
 

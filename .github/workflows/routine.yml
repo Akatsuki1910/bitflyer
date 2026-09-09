@@ -46,6 +46,15 @@ jobs:
           python-version: "3.12"
           cache: pip
 
+      - name: 価格キャッシュを引き継ぐ
+        # 日足は日中変わらない。朝の取得を昼・晩で使い回して
+        # CoinGecko の無料枠(レート制限)を叩きすぎないようにする
+        uses: actions/cache@v6
+        with:
+          path: data
+          key: coingecko-${{ github.run_id }}
+          restore-keys: coingecko-
+
       - name: 依存パッケージを入れる
         run: pip install -r requirements.txt
 

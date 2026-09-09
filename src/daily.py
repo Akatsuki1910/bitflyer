@@ -133,7 +133,7 @@ def main() -> None:
     args = ap.parse_args()
 
     log("価格を取得")
-    prices_raw = datamod.load_all(days=args.days, force=True)
+    prices_raw = datamod.load_all(days=args.days)
     px = {s: df.set_index("date")["close"] for s, df in prices_raw.items()}
 
     log("bitFlyer の板スプレッドを実測")
