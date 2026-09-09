@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>仮売買の記録 — bitFlyer ルーティン</title>
+<link rel="icon" href="data:,">
+<style>
+:root{
+  --bg:#ffffff; --panel:#f6f8fa; --line:#d7dde3; --grid:#e6ebf0;
+  --fg:#1f2328; --fg-dim:#6b7684; --accent:#0969da;
+  --up:#1a7f37; --down:#cf222e; --warnbg:#fff4e5; --warnfg:#9a5b00;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0d1117; --panel:#161b22; --line:#30363d; --grid:#21262d;
+  --fg:#e6edf3; --fg-dim:#8b949e; --accent:#58a6ff;
+  --up:#3fb950; --down:#f85149; --warnbg:#2b2007; --warnfg:#e3b341;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Kaku Gothic ProN",
+  "Noto Sans JP",Meiryo,sans-serif;line-height:1.65;font-size:15px}
+.wrap{max-width:1080px;margin:0 auto;padding:26px 18px 80px}
+h1{font-size:1.45rem;margin:0 0 4px}
+h2{font-size:1.05rem;margin:34px 0 12px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+.sub{color:var(--fg-dim);font-size:.83rem;margin:0 0 6px}
+a{color:var(--accent)}
+nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:18px 0 4px}
+nav.tabs button{background:var(--panel);border:1px solid var(--line);color:var(--fg-dim);
+  border-radius:999px;padding:6px 14px;font-size:.82rem;cursor:pointer;font-family:inherit}
+nav.tabs button[aria-selected=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:14px 0}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:11px;padding:14px}
+.card .k{font-size:.72rem;color:var(--fg-dim)}
+.card .v{font-size:1.3rem;font-weight:650;font-variant-numeric:tabular-nums;margin-top:2px}
+.card .m{font-size:.72rem;color:var(--fg-dim);margin-top:2px}
+.up{color:var(--up)} .down{color:var(--down)} .dim{color:var(--fg-dim)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:11px;background:var(--bg)}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{padding:8px 11px;border-bottom:1px solid var(--grid);text-align:left;vertical-align:top}
+thead th{background:var(--panel);font-size:.75rem;color:var(--fg-dim);font-weight:600;
+  white-space:nowrap;position:sticky;top:0}
+tbody tr:last-child td{border-bottom:none}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.pill{display:inline-block;border-radius:5px;padding:1px 7px;font-size:.72rem;font-weight:600}
+.pill.buy{background:color-mix(in srgb,var(--up) 17%,transparent);color:var(--up)}
+.pill.sell{background:color-mix(in srgb,var(--down) 17%,transparent);color:var(--down)}
+.pill.hold{background:color-mix(in srgb,var(--accent) 15%,transparent);color:var(--accent)}
+.pill.flat{background:var(--grid);color:var(--fg-dim)}
+.why{font-size:.79rem;color:var(--fg-dim);line-height:1.55;max-width:52ch}
+.controls{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:10px 0 12px}
+select,input{background:var(--panel);color:var(--fg);border:1px solid var(--line);
+  border-radius:7px;padding:5px 9px;font-size:.82rem;font-family:inherit}
+.note{background:var(--warnbg);color:var(--warnfg);border-radius:9px;padding:11px 14px;
+  font-size:.83rem;margin:14px 0}
+.err{border:1px solid var(--down);color:var(--down);border-radius:9px;padding:11px 14px;
+  font-size:.83rem;margin:14px 0;background:color-mix(in srgb,var(--down) 8%,transparent)}
+.loading{color:var(--fg-dim);font-size:.85rem;padding:20px 2px}
+section[hidden]{display:none}
+footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--line);
+  font-size:.76rem;color:var(--fg-dim)}
+code{background:var(--panel);border:1px solid var(--line);border-radius:4px;padding:1px 5px;
+  font-size:.82em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>仮売買の記録</h1>
+  <p class="sub">朝・昼・晩に情報を集めて仮想口座で売買した結果を、Supabase から直接読んでいます。実際の注文は一切出していません。</p>
+  <p class="sub" id="meta">読み込み中…</p>
+
+  <nav class="tabs" id="tabs"></nav>
+  <div id="app"><p class="loading">Supabase に接続中…</p></div>
+
+  <footer>
+    データ元: Supabase（読み取り専用の公開キーで直接参照）／
+    <a href="./index.html">バックテストのダッシュボード</a> ／
+    <a href="https://github.com/Akatsuki1910/bitflyer">GitHub</a><br>
+    過去の値動きに対する検証であり、将来の損益を保証するものではありません。
+  </footer>
+</div>
+
+<script>
+const SUPABASE_URL = "https://edqwvckcywbmakkvwiuc.supabase.co";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkcXd2Y2tjeXdibWFra3Z3aXVjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTk1Mzg1MTYsImV4cCI6MjA3NTExNDUxNn0.ugECNWJTYCjGC5SSBmYdErW9DrFb35t0QZGvmA1Utts";
+
+const H = {apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY};
+async function q(table, params){
+  const u = new URL(SUPABASE_URL + "/rest/v1/" + table);
+  for (const [k,v] of Object.entries(params||{})) u.searchParams.set(k,v);
+  const r = await fetch(u, {headers:H});
+  if(!r.ok) throw new Error(table+": "+r.status+" "+(await r.text()).slice(0,200));
+  return r.json();
+}
+const esc = s => String(s??"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const yen = v => v==null ? "—" : Number(v).toLocaleString("ja-JP",{maximumFractionDigits:0})+"円";
+const pct = (v,d=2) => v==null ? "—" : (Number(v)*100).toFixed(d)+"%";
+const spct = (v,d=2) => v==null ? "—" : (Number(v)*100>=0?"+":"")+(Number(v)*100).toFixed(d)+"%";
+const cls = v => v==null ? "" : (Number(v)>0 ? "up" : Number(v)<0 ? "down" : "dim");
+const dt = s => s ? new Date(s).toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}) : "—";
+const SLOT = {morning:"朝", noon:"昼", evening:"晩", manual:"手動"};
+function table(head, rows){
+  if(!rows.length) return '<p class="loading">データがまだありません。</p>';
+  return '<div class="tablewrap"><table><thead><tr>' +
+    head.map(h=>`<th${h.num?' class="num"':""}>${esc(h.label)}</th>`).join("") +
+    "</tr></thead><tbody>" + rows.join("") + "</tbody></table></div>";
+}
+
+const state = {};
+const TABS = [
+  ["overview","いま"],
+  ["standings","口座の成績"],
+  ["trades","約定履歴"],
+  ["signals","判断と根拠"],
+  ["news","集めたニュース"],
+  ["sources","情報ソース"],
+  ["runs","実行ログ"],
+];
+
+// ------------------------------------------------------------------ 描画
+const views = {};
+
+views.overview = async () => {
+  const run = state.latestRun;
+  if(!run) return '<p class="loading">まだ1回も実行されていません。</p>';
+  const [mkt, ind] = await Promise.all([
+    q("bf_market_snapshots", {select:"*", run_id:"eq."+run.id, order:"symbol"}),
+    q("bf_market_indicators", {select:"*", run_id:"eq."+run.id, order:"key"}),
+  ]);
+  let h = `<h2>${esc(SLOT[run.slot]||run.slot)}の回 — ${esc(dt(run.ran_at))}</h2>`;
+  h += `<p class="sub">${esc(run.summary||"")}</p>`;
+  h += '<div class="cards">';
+  for(const m of mkt){
+    h += `<div class="card"><div class="k">${esc(m.symbol)} <span class="dim">${esc(m.venue||"")}</span></div>
+      <div class="v">${yen(m.price)}</div>
+      <div class="m">24h <span class="${cls(m.change_24h)}">${spct(m.change_24h)}</span>
+      ${m.spread!=null?` ／ 片道スプレッド ${pct(m.spread,3)}`:""}</div></div>`;
+  }
+  h += "</div>";
+  if(ind.length){
+    h += "<h2>市況・センチメント</h2><div class=\"cards\">";
+    for(const i of ind){
+      const v = i.value==null ? (i.text_value||"—")
+        : Number(i.value).toLocaleString("ja-JP",{maximumFractionDigits:2});
+      h += `<div class="card"><div class="k">${esc(i.label||i.key)}</div>
+        <div class="v">${esc(v)}</div>
+        <div class="m">${esc(i.text_value&&i.value!=null?i.text_value+" ／ ":"")}${esc(i.source||"")}</div></div>`;
+    }
+    h += "</div>";
+  }
+  const st = state.accounts||[];
+  if(st.length){
+    h += "<h2>仮想口座の上位・下位</h2>";
+    const pick = [...st.slice(0,5), ...st.slice(-3)];
+    h += table([{label:"銘柄"},{label:"戦略"},{label:"状態"},
+      {label:"評価額",num:1},{label:"損益率",num:1},{label:"売買",num:1}],
+      pick.map(a=>`<tr><td>${esc(a.symbol)}</td><td>${esc(a.strategy)}</td>
+        <td><span class="pill ${Number(a.qty)>0?"hold":"flat"}">${Number(a.qty)>0?"保有":"現金"}</span></td>
+        <td class="num">${yen(a.equity)}</td>
+        <td class="num ${cls(a.total_return)}">${spct(a.total_return)}</td>
+        <td class="num">${a.n_trades}回</td></tr>`));
+  }
+  return h;
+};
+
+views.standings = async () => {
+  const acc = state.accounts||[];
+  let h = `<h2>仮想口座の成績</h2><p class="sub">戦略 × 銘柄ごとに元手100万円で独立して回しています。評価額 = 現金 + 保有数量 × 直近価格。</p>`;
+  const syms = [...new Set(acc.map(a=>a.symbol))];
+  h += '<div class="controls"><label>銘柄 <select id="fsym"><option value="">すべて</option>' +
+    syms.map(s=>`<option>${esc(s)}</option>`).join("") + "</select></label></div>";
+  h += '<div id="standingsBody"></div>';
+  setTimeout(()=>{
+    const sel = document.getElementById("fsym");
+    const draw = () => {
+      const f = sel.value;
+      const rows = acc.filter(a=>!f||a.symbol===f).map(a=>`<tr>
+        <td>${esc(a.symbol)}</td><td>${esc(a.strategy)}</td>
+        <td><span class="pill ${Number(a.qty)>0?"hold":"flat"}">${Number(a.qty)>0?"保有":"現金"}</span></td>
+        <td class="num">${yen(a.equity)}</td>
+        <td class="num ${cls(a.total_return)}">${spct(a.total_return)}</td>
+        <td class="num ${cls(a.realized_pnl)}">${yen(a.realized_pnl)}</td>
+        <td class="num">${yen(a.cost_paid)}</td>
+        <td class="num">${a.n_trades}回</td>
+        <td class="num dim">${esc(dt(a.updated_at))}</td></tr>`);
+      document.getElementById("standingsBody").innerHTML = table(
+        [{label:"銘柄"},{label:"戦略"},{label:"状態"},{label:"評価額",num:1},
+         {label:"損益率",num:1},{label:"実現損益",num:1},{label:"払ったコスト",num:1},
+         {label:"売買",num:1},{label:"更新",num:1}], rows);
+    };
+    sel.onchange = draw; draw();
+  });
+  return h;
+};
+
+views.trades = async () => {
+  const rows = await q("bf_paper_trades", {select:"*", order:"ts.desc", limit:"200"});
+  let h = `<h2>約定履歴 <span class="dim" style="font-size:.8rem">直近${rows.length}件</span></h2>`;
+  h += `<p class="sub">シグナルが切り替わった口座だけが売買します。コストは手数料・スプレッド・スリッページの合計です。</p>`;
+  h += table([{label:"日時"},{label:"銘柄"},{label:"戦略"},{label:"売買"},
+    {label:"価格",num:1},{label:"数量",num:1},{label:"コスト",num:1},{label:"実現損益",num:1},{label:"根拠"}],
+    rows.map(t=>`<tr>
+      <td class="num">${esc(dt(t.ts))}</td><td>${esc(t.symbol)}</td><td>${esc(t.strategy)}</td>
+      <td><span class="pill ${t.side==="buy"?"buy":"sell"}">${t.side==="buy"?"買い":"売り"}</span></td>
+      <td class="num">${yen(t.price)}</td>
+      <td class="num">${Number(t.qty).toFixed(6)}</td>
+      <td class="num">${yen(t.cost)}</td>
+      <td class="num ${cls(t.realized_pnl)}">${t.realized_pnl==null?"—":yen(t.realized_pnl)}</td>
+      <td class="why">${esc(t.reason||"")}</td></tr>`));
+  return h;
+};
+
+views.signals = async () => {
+  const run = state.latestRun;
+  if(!run) return '<p class="loading">まだ実行されていません。</p>';
+  const rows = await q("bf_signals", {select:"*", run_id:"eq."+run.id, order:"symbol,strategy"});
+  let h = `<h2>判断と根拠 <span class="dim" style="font-size:.8rem">${esc(dt(run.ran_at))} の回</span></h2>`;
+  h += `<p class="sub">各戦略が「今この値段で」どう判断したか。数字はその場で計算したものです。</p>`;
+  const act = a => a==="買い"?"buy":a==="売り"?"sell":a==="保有継続"?"hold":"flat";
+  h += table([{label:"銘柄"},{label:"戦略"},{label:"判断"},{label:"根拠"},{label:"指標"}],
+    rows.map(s=>`<tr><td>${esc(s.symbol)}</td><td>${esc(s.strategy)}</td>
+      <td><span class="pill ${act(s.action)}">${esc(s.action)}</span></td>
+      <td class="why">${esc(s.rationale||"")}</td>
+      <td class="why dim">${esc(Object.entries(s.indicators||{})
+        .filter(([k])=>!["venue"].includes(k))
+        .map(([k,v])=>`${k}=${typeof v==="number"?Number(v).toLocaleString("ja-JP",{maximumFractionDigits:2}):v}`)
+        .join(" / "))}</td></tr>`));
+  return h;
+};
+
+views.news = async () => {
+  const run = state.latestRun;
+  if(!run) return '<p class="loading">まだ実行されていません。</p>';
+  const rows = await q("bf_news_articles", {select:"*", run_id:"eq."+run.id, order:"published_at.desc"});
+  let h = `<h2>集めたニュース <span class="dim" style="font-size:.8rem">${rows.length}件 / ${esc(dt(run.ran_at))} の回</span></h2>`;
+  h += `<p class="sub">スコアは強気ワードと弱気ワードの単純な差です。相場予測ではありません。</p>`;
+  h += table([{label:"配信"},{label:"見出し"},{label:"銘柄"},{label:"スコア",num:1},{label:"媒体"}],
+    rows.map(n=>`<tr><td class="num dim">${esc(dt(n.published_at))}</td>
+      <td>${n.link?`<a href="${esc(n.link)}" target="_blank" rel="noopener">${esc(n.title)}</a>`:esc(n.title)}
+        <div class="why">${esc((n.summary||"").slice(0,140))}</div></td>
+      <td>${esc((n.coins||[]).join(", "))}</td>
+      <td class="num ${cls(n.score)}">${n.score>0?"+":""}${n.score}</td>
+      <td class="dim">${esc(n.source)}</td></tr>`));
+  return h;
+};
+
+views.sources = async () => {
+  const rows = await q("bf_sources", {select:"*", order:"category,key"});
+  let h = `<h2>毎回確認している情報ソース</h2>
+    <p class="sub">原本は <code>src/sources.py</code>。リポジトリの <a href="https://github.com/Akatsuki1910/bitflyer/blob/main/SOURCES.md">SOURCES.md</a> と同じ内容です。</p>`;
+  h += table([{label:"分類"},{label:"ソース"},{label:"取得"},{label:"何のために見るか"}],
+    rows.map(s=>`<tr><td>${esc(s.category)}</td>
+      <td><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.name)}</a></td>
+      <td><span class="pill ${s.api?"hold":"flat"}">${s.api?"自動":"目視"}</span></td>
+      <td class="why">${esc(s.purpose||"")}${s.note?`<br>※ ${esc(s.note)}`:""}</td></tr>`));
+  return h;
+};
+
+views.runs = async () => {
+  const rows = await q("bf_runs", {select:"*", order:"ran_at.desc", limit:"120"});
+  let h = `<h2>実行ログ <span class="dim" style="font-size:.8rem">直近${rows.length}回</span></h2>`;
+  h += table([{label:"日時"},{label:"回"},{label:"状態"},{label:"内容"},{label:"所要",num:1},{label:"commit"}],
+    rows.map(r=>`<tr><td class="num">${esc(dt(r.ran_at))}</td>
+      <td>${esc(SLOT[r.slot]||r.slot)}</td>
+      <td><span class="pill ${r.status==="ok"?"buy":"sell"}">${esc(r.status)}</span></td>
+      <td class="why">${esc(r.summary||r.error||"")}</td>
+      <td class="num dim">${r.duration_ms?Math.round(r.duration_ms/1000)+"秒":"—"}</td>
+      <td class="dim">${r.git_sha?`<a href="https://github.com/Akatsuki1910/bitflyer/commit/${esc(r.git_sha)}" target="_blank" rel="noopener">${esc(r.git_sha)}</a>`:"—"}</td></tr>`));
+  return h;
+};
+
+// ------------------------------------------------------------------ 起動
+async function show(key){
+  history.replaceState(null,"","#"+key);
+  for(const b of document.querySelectorAll("#tabs button"))
+    b.setAttribute("aria-selected", String(b.dataset.k===key));
+  const app = document.getElementById("app");
+  app.innerHTML = '<p class="loading">読み込み中…</p>';
+  try{ app.innerHTML = await views[key](); }
+  catch(e){ app.innerHTML = `<div class="err">読み込みに失敗しました: ${esc(e.message)}</div>`; }
+}
+
+(async () => {
+  document.getElementById("tabs").innerHTML = TABS.map(([k,l])=>
+    `<button data-k="${k}" aria-selected="false">${l}</button>`).join("");
+  for(const b of document.querySelectorAll("#tabs button")) b.onclick = () => show(b.dataset.k);
+  try{
+    const [runs, acc] = await Promise.all([
+      q("bf_runs", {select:"*", order:"ran_at.desc", limit:"1"}),
+      q("bf_paper_accounts", {select:"*", order:"total_return.desc.nullslast", limit:"200"}),
+    ]);
+    state.latestRun = runs[0]; state.accounts = acc;
+    const n = acc.length;
+    const avg = n ? acc.reduce((s,a)=>s+Number(a.total_return||0),0)/n : 0;
+    const win = acc.filter(a=>Number(a.total_return)>0).length;
+    document.getElementById("meta").innerHTML =
+      state.latestRun
+        ? `最終更新 ${esc(dt(state.latestRun.ran_at))}（${esc(SLOT[state.latestRun.slot]||"")}の回） ／ 
+           仮想口座 ${n}件 ／ 黒字 ${win}件 ／ 平均損益 <span class="${cls(avg)}">${spct(avg)}</span>`
+        : "まだ1回も実行されていません。GitHub Actions の初回実行を待ってください。";
+    const hash = location.hash.slice(1);
+    show(views[hash] ? hash : "overview");
+  }catch(e){
+    document.getElementById("meta").textContent = "";
+    document.getElementById("app").innerHTML =
+      `<div class="err">Supabase に接続できませんでした: ${esc(e.message)}<br>
+       プロジェクトが一時停止していないか、テーブルの読み取りポリシーを確認してください。</div>`;
+  }
+})();
+</script>
+</body>
+</html>

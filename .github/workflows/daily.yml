@@ -2,8 +2,8 @@ name: 毎朝の売買シミュレーション
 
 on:
   schedule:
-    # 22:00 UTC = 翌 07:00 JST
-    - cron: "0 22 * * *"
+    # 21:30 UTC = 翌 06:30 JST（朝のルーティンより前に回す）
+    - cron: "30 21 * * *"
   workflow_dispatch: # 手動実行もできる
   push:
     branches: [main]
@@ -13,7 +13,7 @@ permissions:
   contents: write
 
 concurrency:
-  group: daily-update
+  group: bitflyer-main-push
   cancel-in-progress: false
 
 jobs:

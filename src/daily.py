@@ -15,6 +15,7 @@ from __future__ import annotations
 import argparse
 import json
 import subprocess
+import time
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -112,8 +113,15 @@ def commit_and_push() -> None:
     stamp = datetime.now(JST).strftime("%Y-%m-%d")
     code, out = git("commit", "-m", f"chore: 日次更新 {stamp}")
     log(f"commit: {out.splitlines()[0] if out else 'ok'}")
-    code, out = git("push")
-    log("push: " + ("成功" if code == 0 else f"失敗 {out}"))
+    for attempt in range(3):
+        git("pull", "--rebase", "--autostash")
+        code, out = git("push")
+        if code == 0:
+            log("push: 成功")
+            return
+        log(f"push 失敗({attempt+1}/3): {out.splitlines()[-1] if out else ''}")
+        time.sleep(4)
+    log("push: 3回とも失敗した")
 
 
 def main() -> None:

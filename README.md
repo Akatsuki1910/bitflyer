@@ -2,7 +2,8 @@
 
 bitFlyer で **BTC / ETH / BAT** を売買していたら儲かったのかを、毎朝自動で検証してダッシュボードに出すツールです。
 
-ダッシュボードは GitHub Pages で公開され、GitHub Actions が毎朝 07:00 JST に更新します。
+ダッシュボードは GitHub Pages で公開され、GitHub Actions が毎朝 06:30 JST に更新します。
+さらに **朝・昼・晩の3回**、情報を集めて仮売買を行い、根拠ごと Supabase に記録しています（→ [仮売買の記録](docs/db.html)）。
 
 ---
 
@@ -106,11 +107,20 @@ src/
   verdict.py      多重検定まで含めた最終判定
   news.py         ニュース収集（CoinPost / Cointelegraph / CoinDesk の RSS）
   dashboard.py    docs/index.html を生成
-  daily.py        毎朝のルーティン（上記を全部つなげて commit & push）
+  daily.py        毎朝のバックテスト更新（上記を全部つなげて commit & push）
+  collect.py      朝昼晩の情報収集（板・参考値・Fear&Greed・市況・ニュース）
+  rationale.py    「なぜその判断か」を数字つきの日本語にする
+  paper.py        仮想口座。戦略×銘柄ごとに独立して仮売買を積み上げる
+  db.py           Supabase(PostgREST)の最小クライアント
+  sources.py      確認する情報ソースの原本。SOURCES.md と DB に書き出す
+  routine.py      朝昼晩のルーティン本体
 docs/             GitHub Pages が配信する成果物
-  index.html
-  data/latest.json, data/history.json
-.github/workflows/daily.yml   毎朝 07:00 JST に実行
+  index.html      バックテストのダッシュボード
+  db.html         仮売買の記録（Supabase を直接読む）
+  data/latest.json, data/history.json, data/routine.json
+SOURCES.md        毎回確認している情報ソース一覧（自動生成）
+.github/workflows/daily.yml     毎朝 06:30 JST にバックテストを更新
+.github/workflows/routine.yml   朝昼晩 07:00 / 12:00 / 20:00 JST に仮売買
 ```
 
 ### バックテストの前提
@@ -132,6 +142,67 @@ docs/             GitHub Pages が配信する成果物
 
 bitFlyer 自身は過去のローソク足を返す公開 API を持たないため、過去価格は CoinGecko を使っています。
 実際の bitFlyer の約定値とは多少ずれます。
+
+---
+
+## 朝昼晩の仮売買ルーティン
+
+過去データの検証とは別に、**朝(07:00) / 昼(12:00) / 晩(20:00) JST** に情報を集めて
+その場の値段で仮売買を行い、判断の根拠ごと Supabase に記録しています。
+
+- 見るページ: **[docs/db.html](docs/db.html)**（GitHub Pages の `/db.html`）
+- 情報ソースの一覧: **[SOURCES.md](SOURCES.md)**（原本は `src/sources.py`）
+- 実行: `.github/workflows/routine.yml`
+
+### バックテストとの違い
+
+| | バックテスト（`src/run.py`） | 仮売買（`src/routine.py`） |
+|---|---|---|
+| 対象 | 過去365日をまとめて再現 | 今この瞬間の値段で1回ずつ |
+| やり直し | 何度でもできる | できない。記録が残るだけ |
+| 目的 | ルールに実力があるか | 実際に回したらどうなるか |
+
+過去データに合わせ込んだ戦略は、前へ進み始めた瞬間に壊れます。
+その様子をそのまま残すのがこのルーティンです。
+
+### 仮売買のルール
+
+- **戦略 × 銘柄 = 27口座**。1口座あたり元手100万円で完全に独立
+- シグナルが 0→1 で全額買い、1→0 で全数量売り。サイズ調整はしない
+- 約定価格は板がある銘柄は bitFlyer の mid、無い銘柄は CoinGecko の参考値
+- コストは片道で「手数料 0.15% + 実測スプレッド + スリッページ 0.05%」。
+  販売所しか無い BAT は片道2%と仮定
+- **実際の注文は一切出していません**
+
+### 手元で回す
+
+```bash
+python src/routine.py --dry-run     # DB に書かずに動作だけ見る
+python src/routine.py --slot noon   # 昼の回として記録する
+python src/sources.py               # SOURCES.md を書き直して DB に同期
+```
+
+### Supabase
+
+テーブルは `bf_` で始まるものが一式（`bf_runs` / `bf_signals` / `bf_paper_trades` /
+`bf_paper_accounts` / `bf_equity_snapshots` / `bf_market_snapshots` /
+`bf_market_indicators` / `bf_news_articles` / `bf_backtests` / `bf_sources`）。
+
+RLS は **読み取りだけ anon に開放**、書き込みは `service_role` のみです。
+`docs/db.html` は anon キーで直接読んでいるので、キーがページに埋まっていますが
+これで書き換えはできません。
+
+GitHub Actions 側に次の Secrets が必要です:
+
+| Secret | 値 |
+|---|---|
+| `SUPABASE_URL` | `https://edqwvckcywbmakkvwiuc.supabase.co` |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase ダッシュボード → Project Settings → API Keys の `service_role` |
+
+未設定でもルーティンは動きますが、DB 保存を飛ばして `docs/data/routine.json` だけ更新します。
+
+> このプロジェクトには Prisma で作った別アプリのテーブル（`User` / `Post` 等）も同居しています。
+> そちらで `prisma migrate reset` を実行すると `bf_*` が消えるので注意してください。
 
 ---
 

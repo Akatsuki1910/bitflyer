@@ -1,0 +1,84 @@
+name: 朝昼晩の仮売買ルーティン
+
+on:
+  schedule:
+    # JST 07:00 / 12:00 / 20:00 （UTC 22:00 / 03:00 / 11:00）
+    - cron: "0 22 * * *"
+    - cron: "0 3 * * *"
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "どの回として記録するか"
+        type: choice
+        options: [manual, morning, noon, evening]
+        default: manual
+  push:
+    branches: [main]
+    paths:
+      - "src/routine.py"
+      - "src/collect.py"
+      - "src/paper.py"
+      - "src/db.py"
+      - "src/rationale.py"
+      - "src/sources.py"
+      - ".github/workflows/routine.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: bitflyer-main-push
+  cancel-in-progress: false
+
+jobs:
+  routine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: 依存パッケージを入れる
+        run: pip install -r requirements.txt
+
+      - name: git の名前を設定
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: どの回かを決める
+        id: slot
+        run: |
+          if [ -n "${{ github.event.inputs.slot }}" ]; then
+            echo "slot=${{ github.event.inputs.slot }}" >> "$GITHUB_OUTPUT"
+          else
+            case "${{ github.event.schedule }}" in
+              "0 22 * * *") echo "slot=morning" >> "$GITHUB_OUTPUT" ;;
+              "0 3 * * *")  echo "slot=noon"    >> "$GITHUB_OUTPUT" ;;
+              "0 11 * * *") echo "slot=evening" >> "$GITHUB_OUTPUT" ;;
+              *)            echo "slot=manual"  >> "$GITHUB_OUTPUT" ;;
+            esac
+          fi
+
+      - name: 情報ソース一覧を同期
+        continue-on-error: true
+        run: python src/sources.py
+
+      - name: 情報収集 → 仮売買 → Supabase 保存 → commit & push
+        run: python src/routine.py --slot "${{ steps.slot.outputs.slot }}" --push
+
+      - name: 生成物を成果物として残す
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: routine-${{ steps.slot.outputs.slot }}
+          path: docs/data/
+          retention-days: 14

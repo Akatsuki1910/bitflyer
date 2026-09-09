@@ -270,6 +270,8 @@ def build(ctx: dict) -> str:
 <h1>bitFlyer 売買シミュレーション</h1>
 <p class="sub">BTC / ETH / BAT を実際に売買していたら儲かったのかを、毎朝自動で検証します。
 最終更新 {now.strftime('%Y-%m-%d %H:%M')} JST</p>
+<p class="sub">朝昼晩に実際に判断して積み上げている仮売買の記録は
+<a href="./db.html"><b>仮売買の記録（Supabase）</b></a> にあります。</p>
 
 <h2>相場</h2>
 <div class="cards">{cards}</div>
