@@ -1,0 +1,94 @@
+{
+  "generated_at": "2026-09-12T00:10:31.519388+09:00",
+  "rules": {
+    "flat_band": 0.005,
+    "horizon_tolerance_h": 3.0,
+    "reference": "判断の後に来た最初のルーティンの価格"
+  },
+  "summary": {
+    "n_calls": 3,
+    "n_scored": 0,
+    "n_void": 0,
+    "n_abstain": 0,
+    "n_pending": 3,
+    "n": 0,
+    "hit_rate": null,
+    "brier": null,
+    "baseline": {
+      "always_up_hit_rate": null,
+      "momentum_hit_rate": null,
+      "momentum_n": 0,
+      "coin_flip_hit_rate": 0.5,
+      "coin_flip_brier": 0.25
+    },
+    "by_symbol": {},
+    "by_outlook": {
+      "up": {
+        "n": 0,
+        "hit_rate": null,
+        "brier": null
+      },
+      "down": {
+        "n": 0,
+        "hit_rate": null,
+        "brier": null
+      }
+    },
+    "calibration": []
+  },
+  "accounts": {},
+  "calls": [
+    {
+      "id": "2026-09-12-BTC",
+      "symbol": "BTC",
+      "made_at": "2026-09-12T00:06:55+09:00",
+      "position": "flat",
+      "outlook": "flat",
+      "confidence": null,
+      "horizon_h": 24,
+      "playbook_refs": [
+        "P-01",
+        "P-05",
+        "P-02",
+        "I-06",
+        "P-06"
+      ],
+      "status": "pending",
+      "waiting_for": "判断の後の最初のルーティン"
+    },
+    {
+      "id": "2026-09-12-ETH",
+      "symbol": "ETH",
+      "made_at": "2026-09-12T00:06:55+09:00",
+      "position": "long",
+      "outlook": "up",
+      "confidence": 0.55,
+      "horizon_h": 24,
+      "playbook_refs": [
+        "P-04",
+        "P-05",
+        "R-02",
+        "B-01"
+      ],
+      "status": "pending",
+      "waiting_for": "判断の後の最初のルーティン"
+    },
+    {
+      "id": "2026-09-12-BAT",
+      "symbol": "BAT",
+      "made_at": "2026-09-12T00:06:55+09:00",
+      "position": "flat",
+      "outlook": "flat",
+      "confidence": null,
+      "horizon_h": 24,
+      "playbook_refs": [
+        "B-01",
+        "P-03",
+        "P-07",
+        "P-04"
+      ],
+      "status": "pending",
+      "waiting_for": "判断の後の最初のルーティン"
+    }
+  ]
+}
