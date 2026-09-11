@@ -294,5 +294,79 @@
         "cost_paid": 0.0
       }
     ]
+  },
+  {
+    "ran_at": "2026-09-11T16:42:00.935607+09:00",
+    "slot": "noon",
+    "run_id": 5,
+    "prices": {
+      "BTC": 11925381.0,
+      "ETH": 380906.0,
+      "BAT": 11.04
+    },
+    "n_trades": 0,
+    "summary": "昼のルーティン: 3銘柄 × 9戦略を判定、0件約定、ニュース19件。首位は ETH 100日線より上で保有 (+0.33%)",
+    "standings": [
+      {
+        "symbol": "ETH",
+        "strategy": "100日線より上で保有",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 2.633889714265056,
+        "equity": 1003264.3955018454,
+        "total_return": 0.0032643955018454296,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 2258.871228968492
+      },
+      {
+        "symbol": "ETH",
+        "strategy": "3か月モメンタム",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 2.633889714265056,
+        "equity": 1003264.3955018454,
+        "total_return": 0.0032643955018454296,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 2258.871228968492
+      },
+      {
+        "symbol": "ETH",
+        "strategy": "SMA 20/50 クロス",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 2.633889714265056,
+        "equity": 1003264.3955018454,
+        "total_return": 0.0032643955018454296,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 2258.871228968492
+      },
+      {
+        "symbol": "ETH",
+        "strategy": "SMA 50/100 クロス",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 2.633889714265056,
+        "equity": 1003264.3955018454,
+        "total_return": 0.0032643955018454296,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 2258.871228968492
+      },
+      {
+        "symbol": "ETH",
+        "strategy": "買い持ち(Buy&Hold)",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 2.633889714265056,
+        "equity": 1003264.3955018454,
+        "total_return": 0.0032643955018454296,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 2258.871228968492
+      }
+    ]
   }
 ]
