@@ -66,6 +66,41 @@ def slot_now() -> str:
 
 SLOT_JA = {"morning": "朝", "noon": "昼", "evening": "晩", "manual": "手動"}
 
+# Claude の見立てタスクが書く判断。ルールとは別の仮想口座として約定させる
+AI_STRATEGY = "Claudeの判断"
+AI_CALLS = ROOT / "docs" / "data" / "ai_calls.json"
+
+
+def load_ai_calls() -> list[dict]:
+    if not AI_CALLS.exists():
+        return []
+    try:
+        d = json.loads(AI_CALLS.read_text(encoding="utf-8"))
+    except Exception as e:  # noqa: BLE001
+        log(f"ai_calls.json を読めないので Claude の判断は飛ばす: {e}")
+        return []
+    return d.get("calls", []) if isinstance(d, dict) else []
+
+
+def call_time(call: dict) -> datetime:
+    t = datetime.fromisoformat(call["made_at"])
+    return t if t.tzinfo else t.replace(tzinfo=JST)
+
+
+def latest_ai_call(calls: list[dict], symbol: str, before: datetime) -> dict | None:
+    """この回より前に出された、その銘柄の最新の判断。"""
+    best, best_t = None, None
+    for c in calls:
+        if c.get("symbol") != symbol or c.get("position") not in ("long", "flat"):
+            continue
+        try:
+            t = call_time(c)
+        except Exception:  # noqa: BLE001
+            continue
+        if t < before and (best_t is None or t > best_t):
+            best, best_t = c, t
+    return best
+
 
 def git(*args: str) -> tuple[int, str]:
     p = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
@@ -247,6 +282,54 @@ def main() -> int:
                         log(f"  約定 {sym} / {name}: {t['side']} "
                             f"{t['qty']:.6f} @ {price:,.0f}")
 
+        # ------------------------------------------------------------ 5b. Claude の判断
+        # 見立てタスクが docs/data/ai_calls.json に書いた判断を、この回の価格で約定させる。
+        # 判断より後に来た最初の回で約定するので、判断時点の価格を後から使って有利になることはない。
+        # ルール27口座とは完全に別口座で、ルール側の判断には一切影響しない。
+        ai_calls = load_ai_calls()
+        n_ai = 0
+        for sym in market:
+            call = latest_ai_call(ai_calls, sym, before=now)
+            if not call:
+                continue
+            n_ai += 1
+            sig = 1 if call.get("position") == "long" else 0
+            cost_rate, venue = cost_for(sym, market[sym])
+            price = float(market[sym]["price"])
+            age_h = (now - call_time(call)).total_seconds() / 3600
+            why = (f"{call.get('reasoning') or ''}"
+                   f"（判断 {call.get('id')}、{age_h:.0f}時間前、"
+                   f"確信度 {call.get('confidence')}）"
+                   f" 往復コストは約{cost_rate*2*100:.2f}%（{venue}）。")
+            ind = {"price": price, "call_id": call.get("id"),
+                   "position": call.get("position"), "outlook": call.get("outlook"),
+                   "confidence": call.get("confidence"), "age_hours": round(age_h, 1),
+                   "playbook_refs": call.get("playbook_refs"),
+                   "cost_rate_pct": cost_rate * 100, "venue": venue}
+
+            prev = None
+            if broker:
+                prev = 1 if broker.ensure(sym, AI_STRATEGY).holding else 0
+            action = rat.action_label(prev, sig)
+
+            sig_rows.append({
+                "run_id": run_id, "symbol": sym, "strategy": AI_STRATEGY,
+                "signal": sig, "prev_signal": prev, "action": action,
+                "rationale": why, "indicators": ind, "ts": now.isoformat()})
+            decisions.append({"symbol": sym, "strategy": AI_STRATEGY, "signal": sig,
+                              "action": action, "rationale": why, "indicators": ind})
+
+            if broker:
+                t = broker.step(run_id=run_id, symbol=sym, strategy=AI_STRATEGY,
+                                signal=sig, price=price, cost_rate=cost_rate,
+                                venue=venue, reason=why)
+                if t:
+                    trades.append(t)
+                    log(f"  約定 {sym} / {AI_STRATEGY}: {t['side']} "
+                        f"{t['qty']:.6f} @ {price:,.0f}")
+        if n_ai:
+            log(f"{AI_STRATEGY}: {n_ai}銘柄ぶんの判断を反映")
+
         if use_db and sig_rows:
             sb.insert("bf_signals", sig_rows,
                       upsert_on="run_id,symbol,strategy", returning=False)
@@ -279,8 +362,9 @@ def main() -> int:
         prices = {s: float(v["price"]) for s, v in market.items()}
         standings = broker.snapshot(prices) if broker else []
         summary = (f"{SLOT_JA.get(slot, slot)}のルーティン: "
-                   f"{len(market)}銘柄 × {len(strategies)}戦略を判定、"
-                   f"{len(trades)}件約定、ニュース{len(ctx['news']['articles'])}件")
+                   f"{len(market)}銘柄 × {len(strategies)}戦略を判定"
+                   + (f"＋{AI_STRATEGY}{n_ai}銘柄" if n_ai else "")
+                   + f"、{len(trades)}件約定、ニュース{len(ctx['news']['articles'])}件")
         if standings:
             top = standings[0]
             summary += (f"。首位は {top['symbol']} {top['strategy']} "
@@ -335,6 +419,15 @@ def main() -> int:
                                   "duration_ms": int((time.time() - started) * 1000)},
                       id=f"eq.{run_id}")
         return 1
+
+    # Claude の判断の答え合わせ。この回の価格まで含めて採点し、生成物と一緒に commit する
+    try:
+        import score_calls
+        s = score_calls.build_and_write()["summary"]
+        log(f"{AI_STRATEGY}の採点: 採点済み {s['n_scored']}件 / 判定なし {s['n_void']}件 / "
+            f"見送り {s['n_abstain']}件 / 採点待ち {s['n_pending']}件")
+    except Exception as e:  # noqa: BLE001
+        log(f"採点をスキップ（ルーティンは続行）: {e}")
 
     if args.push:
         commit_and_push(slot)

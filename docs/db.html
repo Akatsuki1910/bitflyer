@@ -93,11 +93,13 @@ async function q(table, params){
   return r.json();
 }
 const esc = s => String(s??"").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const yen = v => v==null ? "—" : Number(v).toLocaleString("ja-JP",{maximumFractionDigits:0})+"円";
+// 1,000円未満は小数2桁まで出す（BAT の数%の動きが丸めで消えないように。lessons.md L-003）
+const yen = v => v==null ? "—" : Number(v).toLocaleString("ja-JP",{maximumFractionDigits: Math.abs(Number(v))<1000 ? 2 : 0})+"円";
 const pct = (v,d=2) => v==null ? "—" : (Number(v)*100).toFixed(d)+"%";
 const spct = (v,d=2) => v==null ? "—" : (Number(v)*100>=0?"+":"")+(Number(v)*100).toFixed(d)+"%";
 const cls = v => v==null ? "" : (Number(v)>0 ? "up" : Number(v)<0 ? "down" : "dim");
-const dt = s => s ? new Date(s).toLocaleString("ja-JP",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}) : "—";
+// 見る人のPCの時計ではなく JST で出す（朝・昼・晩の区切りが JST のため。lessons.md L-002）
+const dt = s => s ? new Date(s).toLocaleString("ja-JP",{timeZone:"Asia/Tokyo",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}) : "—";
 const SLOT = {morning:"朝", noon:"昼", evening:"晩", manual:"手動"};
 function table(head, rows){
   if(!rows.length) return '<p class="loading">データがまだありません。</p>';
@@ -109,7 +111,7 @@ function table(head, rows){
 const state = {};
 const TABS = [
   ["overview","いま"],
-  ["commentary","Claudeの見立て"],
+  ["commentary","Claudeの判断"],
   ["standings","口座の成績"],
   ["trades","約定履歴"],
   ["signals","判断と根拠"],
@@ -155,7 +157,7 @@ views.overview = async () => {
     const pick = [...st.slice(0,5), ...st.slice(-3)];
     h += table([{label:"銘柄"},{label:"戦略"},{label:"状態"},
       {label:"評価額",num:1},{label:"損益率",num:1},{label:"売買",num:1}],
-      pick.map(a=>`<tr><td>${esc(a.symbol)}</td><td>${esc(a.strategy)}</td>
+      pick.map(a=>`<tr><td>${esc(a.symbol)}</td><td>${a.strategy==="Claudeの判断"?"<b>"+esc(a.strategy)+"</b>":esc(a.strategy)}</td>
         <td><span class="pill ${Number(a.qty)>0?"hold":"flat"}">${Number(a.qty)>0?"保有":"現金"}</span></td>
         <td class="num">${yen(a.equity)}</td>
         <td class="num ${cls(a.total_return)}">${spct(a.total_return)}</td>
@@ -258,42 +260,113 @@ views.sources = async () => {
 };
 
 views.commentary = async () => {
-  // 見立てだけは Supabase ではなくリポジトリ内の静的ファイル。
-  // Claude Code の定期タスクが書き出して commit している。
-  let c = null;
-  try{
-    const r = await fetch("data/commentary.json?t=" + Date.now());
-    if(r.ok) c = await r.json();
-  }catch(e){ /* 未生成なら下の案内を出す */ }
+  // 判断・採点・見立ては Supabase ではなくリポジトリ内の静的ファイル。
+  // 判断と見立ては Claude Code の見立てタスクが書き、採点は score_calls.py が機械的に行う。
+  const getJSON = async name => {
+    try{ const r = await fetch(`data/${name}?t=${Date.now()}`); return r.ok ? await r.json() : null; }
+    catch(e){ return null; }
+  };
+  const [c, callsDoc, card] = await Promise.all([
+    getJSON("commentary.json"), getJSON("ai_calls.json"), getJSON("ai_scorecard.json")]);
+  const calls = (callsDoc && callsDoc.calls) || [];
+  const OUTLOOK = {up:"上", down:"下", flat:"横ばい"};
+  const POSITION = {long:"持つ", flat:"持たない"};
+  const p0 = v => v==null ? "—" : (Number(v)*100).toFixed(0)+"%";
+  const KB = "https://github.com/Akatsuki1910/bitflyer/blob/main/knowledge/";
+  let h = "";
 
-  if(!c) return `<h2>Claudeの見立て</h2>
-    <p class="loading">まだ生成されていません。<br>
-    Claude Code の定期タスク「bitflyer 見立て」が走ると、ここに考察が入ります。</p>`;
-
-  const stale = c.generated_at
-    ? (Date.now() - new Date(c.generated_at)) / 3600000 : null;
-  let h = `<h2>${esc(c.headline || "見立て")}</h2>`;
-  h += `<p class="sub">${esc(dt(c.generated_at))} 時点${c.model?" ／ "+esc(c.model):""}`
-     + (stale!=null && stale > 30 ? ` ／ <span class="down">${Math.floor(stale/24)}日前の内容です</span>` : "")
-     + `</p>`;
-
-  if(c.stance) h += `<div class="cards"><div class="card"><div class="k">全体の見方</div>
-    <div class="v" style="font-size:1.05rem">${esc(c.stance)}</div></div></div>`;
-
-  for(const sec of (c.sections || [])){
-    h += `<h2>${esc(sec.title || "")}</h2><p class="why">${esc(sec.body || "").split("\n").join("<br>")}</p>`;
+  // ---------------------------------------------------------------- いま有効な判断
+  h += `<h2>Claudeの判断 <span class="dim" style="font-size:.8rem">銘柄ごとの最新</span></h2>`;
+  if(!calls.length){
+    h += `<p class="loading">まだ判断を出していません。見立てタスクが走ると、銘柄ごとの判断がここに入ります。</p>`;
+  } else {
+    const latest = {};
+    for(const x of calls) if(!latest[x.symbol] || x.made_at > latest[x.symbol].made_at) latest[x.symbol] = x;
+    h += '<div class="cards">';
+    for(const sym of Object.keys(latest).sort()){
+      const x = latest[sym];
+      h += `<div class="card"><div class="k">${esc(sym)} <span class="dim">${esc(dt(x.made_at))}</span></div>
+        <div class="v"><span class="pill ${x.position==="long"?"hold":"flat"}">${POSITION[x.position]||esc(x.position)}</span>
+          <span style="font-size:.92rem">${x.outlook==="flat" ? "方向は見送り"
+            : `見通し ${OUTLOOK[x.outlook]||esc(x.outlook)} ／ 確信度 ${esc(x.confidence)}`}</span></div>
+        <p class="why">${esc(x.reasoning||"")}</p>
+        ${x.counterpoint?`<p class="why"><b>反対側の材料:</b> ${esc(x.counterpoint)}</p>`:""}
+        ${x.invalidation?`<p class="why"><b>この見方を捨てる条件:</b> ${esc(x.invalidation)}</p>`:""}
+        ${(x.playbook_refs||[]).length?`<p class="why dim">根拠: ${x.playbook_refs.map(esc).join(", ")}</p>`:""}
+      </div>`;
+    }
+    h += "</div>";
   }
 
-  if((c.watchlist || []).length){
-    h += "<h2>次に見るところ</h2><ul class=\"why\">";
-    for(const w of c.watchlist) h += `<li>${esc(w)}</li>`;
-    h += "</ul>";
+  // ---------------------------------------------------------------- 答え合わせ
+  if(card && card.summary){
+    const s = card.summary, b = s.baseline || {};
+    h += `<h2>採点の成績 <span class="dim" style="font-size:.8rem">機械が判定</span></h2><p class="sub">判断の後に来た最初のルーティンの価格から、約24時間後の価格で機械的に採点しています
+      （Claude の自己採点ではありません）。採点するのは上/下の見通しだけで、値動きが ±0.5% 以内なら判定なし、
+      方向を見送った判断は採点しません。コイン投げなら的中率50%・ブライアスコア0.250です。</p>`;
+    h += `<div class="cards">
+      <div class="card"><div class="k">採点済み</div><div class="v">${s.n_scored}</div>
+        <div class="m">判定なし ${s.n_void||0} ／ 見送り ${s.n_abstain||0} ／ 採点待ち ${s.n_pending||0}</div></div>
+      <div class="card"><div class="k">的中率</div><div class="v">${p0(s.hit_rate)}</div>
+        <div class="m">比べる基準: コイン投げ 50% ／ いつも上 ${p0(b.always_up_hit_rate)} ／ 直前と同じ向き ${p0(b.momentum_hit_rate)}</div></div>
+      <div class="card"><div class="k">ブライアスコア</div>
+        <div class="v ${s.brier!=null && s.brier>0.25?"down":""}">${s.brier==null?"—":s.brier.toFixed(3)}</div>
+        <div class="m">0.250より小さいほど確信度の付け方が良い</div></div>
+    </div>
+    ${s.n_scored < 20 ? `<p class="sub">採点済みが20件に満たないうちは、的中率の差はほとんど運で決まります。</p>` : ""}`;
+
+    const accs = card.accounts || {};
+    if(Object.keys(accs).length){
+      h += `<h2>Claudeの口座と、同じ期間のルール口座</h2>`;
+      h += table([{label:"銘柄"},{label:"開始"},{label:"Claude",num:1},{label:"同期間の買い持ち",num:1},
+                  {label:"ルールの中央値",num:1},{label:"順位",num:1},{label:"売買",num:1}],
+        Object.entries(accs).map(([sym,a])=>`<tr><td>${esc(sym)}</td><td class="num dim">${esc(dt(a.started_at))}</td>
+          <td class="num ${cls(a.return)}">${spct(a.return)}</td>
+          <td class="num ${cls(a.buy_and_hold_same_period)}">${spct(a.buy_and_hold_same_period)}</td>
+          <td class="num ${cls(a.rules_median_same_period)}">${spct(a.rules_median_same_period)}</td>
+          <td class="num">${a.rank} / ${a.of}</td><td class="num">${a.n_trades}回</td></tr>`));
+    }
+
+    const done = (card.calls||[]).filter(r=>r.status!=="pending");
+    if(done.length){
+      const RESULT = r => r.status==="scored" ? (r.hit ? ["buy","的中"] : ["sell","外れ"])
+                        : r.status==="void" ? ["flat","判定なし"] : ["flat","見送り"];
+      h += "<h2>判断ごとの結果</h2>";
+      h += table([{label:"判断した日時"},{label:"銘柄"},{label:"見通し"},{label:"確信度",num:1},
+                  {label:"実際の値動き",num:1},{label:"結果"}],
+        done.slice(0,40).map(r=>{ const [k,label] = RESULT(r); return `<tr>
+          <td class="num dim">${esc(dt(r.made_at))}</td><td>${esc(r.symbol)}</td>
+          <td>${r.outlook==="flat"?"見送り":(OUTLOOK[r.outlook]||esc(r.outlook))}</td>
+          <td class="num">${r.confidence==null?"—":esc(r.confidence)}</td>
+          <td class="num ${cls(r.change)}">${spct(r.change)}</td>
+          <td><span class="pill ${k}">${label}</span></td></tr>`; }));
+    }
+  }
+
+  // ---------------------------------------------------------------- 見立て
+  if(c){
+    const stale = c.generated_at ? (Date.now() - new Date(c.generated_at)) / 3600000 : null;
+    h += `<h2>見立て — ${esc(c.headline || "")}</h2>`;
+    h += `<p class="sub">${esc(dt(c.generated_at))} 時点${c.model?" ／ "+esc(c.model):""}`
+       + (stale!=null && stale > 30 ? ` ／ <span class="down">${Math.floor(stale/24)}日前の内容です</span>` : "")
+       + `</p>`;
+    if(c.stance) h += `<div class="cards"><div class="card"><div class="k">全体の見方</div>
+      <div class="v" style="font-size:1.05rem">${esc(c.stance)}</div></div></div>`;
+    for(const sec of (c.sections || [])){
+      h += `<h2>${esc(sec.title || "")}</h2><p class="why">${esc(sec.body || "").split("\n").join("<br>")}</p>`;
+    }
+    if((c.watchlist || []).length){
+      h += `<h2>次に見るところ</h2><ul class="why">`;
+      for(const w of c.watchlist) h += `<li>${esc(w)}</li>`;
+      h += "</ul>";
+    }
   }
 
   h += `<p class="sub" style="margin-top:24px">
-    この欄だけは Claude が書いた解釈です。売買判断そのものは
-    <code>src/strategies.py</code> の計算式が決めており、ここの文章は一切影響しません。
-    投資助言ではありません。</p>`;
+    判断の拠り所は <a href="${KB}playbook.md" target="_blank" rel="noopener">売買判断ハンドブック</a>、
+    外れた判断からの学びは <a href="${KB}lessons.md" target="_blank" rel="noopener">教訓ノート</a> にあります。
+    この判断で動くのは「Claudeの判断」口座だけで、ルール27口座は <code>src/strategies.py</code> の計算式のままです。
+    実際の注文は出していません。投資助言ではありません。</p>`;
   return h;
 };
 

@@ -2,10 +2,11 @@ name: 朝昼晩の仮売買ルーティン
 
 on:
   schedule:
-    # JST 07:00 / 12:00 / 20:00 （UTC 22:00 / 03:00 / 11:00）
-    - cron: "0 22 * * *"
-    - cron: "0 3 * * *"
-    - cron: "0 11 * * *"
+    # JST 07:17 / 12:17 / 20:17 （UTC 22:17 / 03:17 / 11:17）
+    # 毎時0分は GitHub Actions が混み、実測で1.5〜4.7時間遅れていたので分をずらしている
+    - cron: "17 22 * * *"
+    - cron: "17 3 * * *"
+    - cron: "17 11 * * *"
   workflow_dispatch:
     inputs:
       slot:
@@ -13,16 +14,12 @@ on:
         type: choice
         options: [manual, morning, noon, evening]
         default: manual
-  push:
-    branches: [main]
-    paths:
-      - "src/routine.py"
-      - "src/collect.py"
-      - "src/paper.py"
-      - "src/db.py"
-      - "src/rationale.py"
-      - "src/sources.py"
-      - ".github/workflows/routine.yml"
+      dry_run:
+        description: "DB に書かず push もしない（動作確認用。仮想口座は動かない）"
+        type: boolean
+        default: false
+  # push では起動しない。コードを変えるたびに予定外の回が走り、
+  # 仮想口座がスケジュール外の価格で約定して記録が汚れるため。
 
 permissions:
   contents: write
@@ -69,20 +66,27 @@ jobs:
           if [ -n "${{ github.event.inputs.slot }}" ]; then
             echo "slot=${{ github.event.inputs.slot }}" >> "$GITHUB_OUTPUT"
           else
+            # 旧スケジュール(毎時0分)で起動がすでに予約された回も正しく判定する
             case "${{ github.event.schedule }}" in
-              "0 22 * * *") echo "slot=morning" >> "$GITHUB_OUTPUT" ;;
-              "0 3 * * *")  echo "slot=noon"    >> "$GITHUB_OUTPUT" ;;
-              "0 11 * * *") echo "slot=evening" >> "$GITHUB_OUTPUT" ;;
-              *)            echo "slot=manual"  >> "$GITHUB_OUTPUT" ;;
+              "17 22 * * *"|"0 22 * * *") echo "slot=morning" >> "$GITHUB_OUTPUT" ;;
+              "17 3 * * *"|"0 3 * * *")   echo "slot=noon"    >> "$GITHUB_OUTPUT" ;;
+              "17 11 * * *"|"0 11 * * *") echo "slot=evening" >> "$GITHUB_OUTPUT" ;;
+              *)                          echo "slot=manual"  >> "$GITHUB_OUTPUT" ;;
             esac
           fi
 
       - name: 情報ソース一覧を同期
+        if: ${{ inputs.dry_run != true }}
         continue-on-error: true
         run: python src/sources.py
 
-      - name: 情報収集 → 仮売買 → Supabase 保存 → commit & push
-        run: python src/routine.py --slot "${{ steps.slot.outputs.slot }}" --push
+      - name: 情報収集 → 仮売買(ルール27口座 + Claudeの判断) → Supabase 保存 → 採点 → commit & push
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            python src/routine.py --slot "${{ steps.slot.outputs.slot }}" --dry-run
+          else
+            python src/routine.py --slot "${{ steps.slot.outputs.slot }}" --push
+          fi
 
       - name: 生成物を成果物として残す
         if: always()
