@@ -160,6 +160,88 @@ def moves_table(study: dict) -> str:
       <tbody>{''.join(rows)}</tbody></table></div>"""
 
 
+# ----------------------------------------------------------------- 8年ぶんで探した傾向
+VERDICT_CLS = {"再現した": "up", "効かない": "down", "再現しなかった": "down"}
+
+
+def research_rows(res: dict) -> str:
+    rows = []
+    for r in res["rows"]:
+        cls = VERDICT_CLS.get(r["verdict"], "dim")
+        note = f'<br><small>{html.escape(r["note"])}</small>' if r.get("note") else ""
+        rows.append(
+            f'<tr><th scope=row>{html.escape(r["name"])}{note}</th>'
+            f'<td>{html.escape(r["kind"])}</td>'
+            f'<td class="num">{html.escape(r["is"])}</td><td class="num">{html.escape(r["oos"])}</td>'
+            f'<td><span class="{cls}"><b>{html.escape(r["verdict"])}</b></span></td></tr>')
+    return f"""<div class="scroll"><table class="grid">
+      <thead><tr><th scope=col>傾向</th><th>種類</th><th class="num">前半 {res['split']['is']}</th>
+      <th class="num">後半 {res['split']['oos']}</th><th>判定</th></tr></thead>
+      <tbody>{''.join(rows)}</tbody></table></div>"""
+
+
+def magnitude_table(res: dict) -> str:
+    head = "".join(f'<th class="num">{lab}</th>' for lab in
+                   ("最も小さい", "小さい", "中くらい", "大きい", "最も大きい"))
+    rows = []
+    for sym, m in res["magnitude"].items():
+        cells = "".join(f'<td class="num">{q["move"]:.2f}%<br><small>±0.5%以内 {q["flat"]*100:.0f}%</small></td>'
+                        for q in m["quintiles"])
+        rows.append(f"<tr><th scope=row>{sym}</th>{cells}</tr>")
+    return f"""<div class="scroll"><table class="grid">
+      <thead><tr><th scope=col>予測した値幅</th>{head}</tr></thead>
+      <tbody>{''.join(rows)}</tbody></table></div>"""
+
+
+def trend_table(res: dict) -> str:
+    periods = list(dict.fromkeys(t["period"] for t in res["trend"]))
+    head = "".join(f'<th class="num">{p}</th>' for p in periods)
+    rows = []
+    for sym in dict.fromkeys(t["sym"] for t in res["trend"]):
+        for key, label in (("bh", "買い持ち"), ("rule", "100日線の上で保有")):
+            cells = []
+            for p in periods:
+                t = next(x for x in res["trend"] if x["sym"] == sym and x["period"] == p)[key]
+                cls = "up" if t["annual"] >= 0 else "down"
+                cells.append(f'<td class="num"><span class="{cls}">{t["annual"]*100:+.0f}%</span>'
+                             f'<br><small>最大下落 {t["maxdd"]*100:.0f}%</small></td>')
+            rows.append(f'<tr><th scope=row>{sym} {label}</th>{"".join(cells)}</tr>')
+    return f"""<div class="scroll"><table class="grid">
+      <thead><tr><th scope=col>年率リターン（往復コスト込み）</th>{head}</tr></thead>
+      <tbody>{''.join(rows)}</tbody></table></div>"""
+
+
+def research_section(res: dict | None) -> str:
+    if not res:
+        return ""
+    m = res["models"]
+    model_txt = "／".join(
+        f'{s} 前半 {v["is"]["hit"]*100:.1f}% → <b>後半 {v["oos"]["hit"]*100:.1f}%</b>'
+        f'（いつも上 {v["oos"]["always_up"]*100:.1f}%）' for s, v in m.items())
+    now = "／".join(f'{s} {"上" if v["above"] else "下"}（{v["vs_ma100"]*100:+.0f}%、{v["since"]} から）'
+                    for s, v in res["now"].items())
+    return f"""
+<h2>8年ぶんで探した傾向</h2>
+<p class="sub">1年では標本が足りないので、{res['from']} 〜 {res['to']} の Binance の日足・1時間足、資金調達率、
+Fear & Greed、米国株、FOMC の日程（{res['fomc_count']}回）で調べ直しました。
+<b>前半（{res['split']['is']}）で見つけた傾向が、後半（{res['split']['oos']}）でも同じ向きに出るか</b>で判定しています。
+更新は手動（<code>python src/research.py</code>）、{res['generated_at'][:10]} 時点。</p>
+{research_rows(res)}
+<p class="sub">これらの材料を全部入れて翌日の方向を予測するモデルを前半で作ると、的中率は {model_txt}。
+<b>前半で当たって見えた分は、後半ではほぼ消えました。</b></p>
+
+<h2>予測できたのは「方向」より「大きさ」</h2>
+<p class="sub">直近の値幅・週末・FOMC の日程から翌日の値幅を予測し（前半で推定）、後半の日を予測の小さい順に5つに分けた実際の平均値幅です。</p>
+{magnitude_table(res)}
+
+<h2>数週間のトレンドで持つ／持たないを決めると</h2>
+<p class="sub">「100日線の上なら持つ」を週1回（月曜）だけ判定した場合と、買い持ちの比較です。
+移動平均の日数を30〜200日で変えても、BTC・ETH ではほとんどの期間で最大下落が浅くなりました。
+強い上昇相場（2023-24）では取り逃がします。いまの100日線との位置: {now}</p>
+{trend_table(res)}
+"""
+
+
 def study_findings(study: dict) -> str:
     br = {b["sym"]: b for b in study["base_rates"]}
     follow = "／".join(f'{s} {br[s]["follow"]*100:.0f}%' for s in br)
@@ -338,6 +420,7 @@ def build(ctx: dict) -> str:
 <div class="verdict">
 {study_findings(ctx['study'])}
 </div>
+{research_section(ctx.get('research'))}
 
 <div class="note">
 <b>売買コストの前提</b>

@@ -51,6 +51,15 @@ def log(msg: str) -> None:
     print(f"[{datetime.now(JST):%H:%M:%S}] {msg}", flush=True)
 
 
+def load_research() -> dict | None:
+    """src/research.py が手動で書き出した長期の検証結果。無ければページに出さない。"""
+    path = ROOT / "docs" / "data" / "research.json"
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+
+
 def git(*args: str) -> tuple[int, str]:
     p = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
     return p.returncode, (p.stdout + p.stderr).strip()
@@ -128,6 +137,7 @@ def main() -> None:
         "prices": px, "spreads": spreads, "news": nws, "signals": signals,
         "rows": sorted(rows, key=lambda r: (r["sym"], -r["ret"])),
         "n_days": n_days, "study": study,
+        "research": load_research(),
     }
 
     out = dashboard.write(ctx)
