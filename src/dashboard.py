@@ -40,49 +40,6 @@ def sparkline(values, w=560, h=140, pad=6) -> str:
     )
 
 
-def multi_line(series: dict, w=880, h=320, pad=34) -> str:
-    """複数の資産推移を1枚に重ねる(全部を初日=100 に正規化)。"""
-    colors = ["#f7931a", "#627eea", "#e34a3c", "#3fb950", "#a371f7", "#58a6ff", "#d29922"]
-    norm = {}
-    for k, s in series.items():
-        a = np.asarray(s, dtype=float)
-        if len(a) < 2 or a[0] == 0:
-            continue
-        norm[k] = a / a[0] * 100
-    if not norm:
-        return ""
-    lo = min(float(a.min()) for a in norm.values())
-    hi = max(float(a.max()) for a in norm.values())
-    rng = (hi - lo) or 1.0
-
-    def y_of(val):
-        return h - pad - (val - lo) / rng * (h - 2 * pad)
-
-    parts = [f'<svg viewBox="0 0 {w} {h}" class="chart" role="img">']
-    # 横の目盛り
-    for frac in (0, 0.25, 0.5, 0.75, 1.0):
-        val = lo + rng * frac
-        y = y_of(val)
-        parts.append(f'<line x1="{pad}" y1="{y:.1f}" x2="{w-pad}" y2="{y:.1f}" '
-                     f'stroke="var(--grid)" stroke-width="1"/>')
-        parts.append(f'<text x="2" y="{y+4:.1f}" class="ax">{val:.0f}</text>')
-    y100 = y_of(100)
-    parts.append(f'<line x1="{pad}" y1="{y100:.1f}" x2="{w-pad}" y2="{y100:.1f}" '
-                 f'stroke="var(--fg-dim)" stroke-width="1" stroke-dasharray="4 4"/>')
-
-    legend = []
-    for i, (k, a) in enumerate(norm.items()):
-        c = colors[i % len(colors)]
-        xs = np.linspace(pad, w - pad, len(a))
-        pts = " ".join(f"{x:.1f},{y_of(val):.1f}" for x, val in zip(xs, a))
-        parts.append(f'<polyline points="{pts}" fill="none" stroke="{c}" stroke-width="2.2" '
-                     f'stroke-linejoin="round"/>')
-        legend.append(f'<span class="lg"><i style="background:{c}"></i>{html.escape(k)} '
-                      f'<b>{a[-1]:.0f}</b></span>')
-    parts.append("</svg>")
-    return "".join(parts) + f'<div class="legend">{"".join(legend)}</div>'
-
-
 # ----------------------------------------------------------------- 部品
 def card(sym: str, px: pd.Series, spread: float | None, news_mood: dict) -> str:
     last = float(px.iloc[-1])
@@ -134,21 +91,101 @@ def signal_table(signals: dict) -> str:
       <tbody>{''.join(rows)}</tbody></table></div>"""
 
 
-def result_table(rows: list[dict]) -> str:
-    def fmt(r):
-        cls = "up" if r["ret"] >= 0 else "down"
-        return (f'<tr><td>{html.escape(r["sym"])}</td><td>{html.escape(r["name"])}</td>'
-                f'<td class="num {cls}">{r["ret"]*100:+.2f}%</td>'
-                f'<td class="num">{r["mdd"]*100:.1f}%</td>'
-                f'<td class="num">{r["sharpe"]:.2f}</td>'
-                f'<td class="num">{r["trades"]}</td>'
-                f'<td class="num">{r["cost"]:,.0f}</td></tr>')
-    body = "".join(fmt(r) for r in rows)
+# ----------------------------------------------------------------- 1年ぶんの答え合わせ
+def edge_table(study: dict) -> str:
+    """材料ごとの「翌日の方向」。当たっていないことを見せるための表。"""
+    syms = [b["sym"] for b in study["base_rates"]]
+    head = "".join(f'<th class="num">{s}</th>' for s in syms)
+    rows = []
+    for row in study["edges"]:
+        cells = []
+        for s in syms:
+            c = row["cells"].get(s)
+            if not c:
+                cells.append('<td class="num">—</td>')
+                continue
+            # 五分五分から離れていると言えるのは p<0.05 のときだけ
+            strong = ' class="warn"' if c["p"] < 0.05 else ""
+            cells.append(
+                f'<td class="num"><span{strong}>{c["side"]}{c["rate"]*100:.0f}%</span>'
+                f'<br><small>{c["judged"]}日 p={c["p"]:.2f}</small></td>')
+        rows.append(f'<tr><th scope=row>{html.escape(row["label"])}</th>{"".join(cells)}</tr>')
     return f"""<div class="scroll"><table class="grid">
-      <thead><tr><th>銘柄</th><th>戦略</th><th class="num">リターン</th>
-      <th class="num">最大DD</th><th class="num">シャープ</th>
-      <th class="num">売買</th><th class="num">コスト(円)</th></tr></thead>
-      <tbody>{body}</tbody></table></div>"""
+      <thead><tr><th scope=col>判断に使ってきた材料</th>{head}</tr></thead>
+      <tbody>{''.join(rows)}</tbody></table></div>"""
+
+
+def cost_table(study: dict) -> str:
+    """保有期間ごとに、往復コストを取り返すのに必要な的中率。"""
+    days = [h["days"] for h in study["costs"][0]["holds"]]
+    head = "".join(f'<th class="num">{d}日</th>' for d in days)
+    rows = []
+    for c in study["costs"]:
+        cells = []
+        for h in c["holds"]:
+            need = "取り返せない" if h["need"] is None else f'{h["need"]*100:.0f}%'
+            cls = ' class="warn"' if h["need"] is None or h["need"] > 0.6 else ""
+            cells.append(f'<td class="num"><span{cls}>{need}</span>'
+                         f'<br><small>値幅 {h["move"]:.1f}%</small></td>')
+        rows.append(f'<tr><th scope=row>{c["sym"]}<br><small>往復 {c["cost"]:.2f}%</small></th>'
+                    f'{"".join(cells)}</tr>')
+    return f"""<div class="scroll"><table class="grid">
+      <thead><tr><th scope=col>銘柄</th>{head}</tr></thead>
+      <tbody>{''.join(rows)}</tbody></table></div>"""
+
+
+def moves_table(study: dict) -> str:
+    """大きく動いた日と、その日の材料(手書きメモ)。"""
+    rows = []
+    for m in study["big_moves"]:
+        mv = "".join(
+            f'<td class="num {"up" if v >= 0 else "down"}">{v:+.1f}%</td>'
+            for v in m["moves"].values())
+        nxt = ("—" if m["next"] is None else
+               f'<span class="{"up" if m["next"] >= 0 else "down"}">{m["next"]:+.1f}%</span>')
+        ev = m.get("event")
+        if ev:
+            note = html.escape(ev["note"])
+            if ev.get("url"):
+                note += (f' <a href="{html.escape(ev["url"], quote=True)}" target="_blank" '
+                         f'rel="noopener noreferrer">{html.escape(ev.get("source", "出典"))}</a>')
+        else:
+            note = '<span class="dim">—</span>'
+        rows.append(f'<tr><th scope=row>{m["date"]}</th>{mv}'
+                    f'<td class="num">{nxt}</td><td class="why">{note}</td></tr>')
+    heads = "".join(f'<th class="num">{s}</th>' for s in study["big_moves"][0]["moves"])
+    return f"""<div class="scroll"><table class="grid">
+      <thead><tr><th scope=col>日付</th>{heads}<th class="num">翌日のBTC</th>
+      <th>その日の材料（動いた後に報じられたもの）</th></tr></thead>
+      <tbody>{''.join(rows)}</tbody></table></div>"""
+
+
+def study_findings(study: dict) -> str:
+    br = {b["sym"]: b for b in study["base_rates"]}
+    follow = "／".join(f'{s} {br[s]["follow"]*100:.0f}%' for s in br)
+    n_tests = sum(1 for row in study["edges"] for c in row["cells"].values() if c)
+    n_strong = sum(1 for row in study["edges"] for c in row["cells"].values()
+                   if c and c["p"] < 0.05)
+    need1 = {c["sym"]: c["holds"][0]["need"] for c in study["costs"]}
+    need_txt = "／".join(
+        f'{s} {"どんな的中率でも不可能" if v is None else f"{v*100:.0f}%"}'
+        for s, v in need1.items())
+    kinds = list(dict.fromkeys(
+        k for m in study["big_moves"] if m.get("event")
+        for k in m["event"]["kind"].split("・")))
+    items = [
+        f"翌日が前日と同じ向きに動いた割合は {follow}。"
+        "<b>「直前の動きに乗る／逆らう」は、それだけでは根拠にならない</b>",
+        f"11の材料 × 3銘柄 = {n_tests}通りを試して、五分五分と言えないほど偏ったのは "
+        f"<b>{n_strong}通り</b>（実力が無くても偶然 {n_tests*0.05:.1f}通り は出る水準）",
+        f"24時間の方向を当てて出入りするとき、往復コストを取り返すのに必要な的中率は {need_txt}。"
+        "<b>BAT は1日の平均値幅より往復コストのほうが大きい</b>",
+        "保有を長くするほど必要な的中率は下がる（BTC は60日保有なら51%）。"
+        "<b>方向を当てる勝負より、持つ期間を延ばすほうがコスト構造に合う</b>",
+        f"大きく動いた日の材料は {('／'.join(kinds) or '—')} で、"
+        "いずれも<b>動いた後に記事になったもの</b>。前日に読めた材料ではない",
+    ]
+    return "<ul>" + "".join(f"<li>{i}</li>" for i in items) + "</ul>"
 
 
 def news_list(articles: list[dict]) -> str:
@@ -211,12 +248,6 @@ h3 small{font-weight:400;color:var(--fg-dim);font-size:.72rem;margin-left:5px}
 .spark{width:100%;height:52px;display:block;margin:3px 0 6px}
 .mood{font-size:.74rem;color:var(--fg-dim);margin:2px 0 0}
 .axlabel{font-size:.64rem;color:var(--fg-dim);margin:-4px 0 5px;text-align:right}
-.chart{width:100%;height:auto;display:block;background:var(--panel);
-  border:1px solid var(--line);border-radius:11px;padding:6px}
-.ax{fill:var(--fg-dim);font-size:10px}
-.legend{display:flex;gap:15px;flex-wrap:wrap;margin-top:9px;font-size:.79rem;color:var(--fg-dim)}
-.lg i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px}
-.lg b{color:var(--fg);font-variant-numeric:tabular-nums;margin-left:3px}
 .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;
   border:1px solid var(--line);border-radius:11px}
 table.grid{border-collapse:collapse;width:100%;font-size:.85rem;min-width:520px}
@@ -226,6 +257,10 @@ table.grid thead th{background:var(--panel);position:sticky;top:0;font-size:.76r
 table.grid tbody tr:last-child td{border-bottom:0}
 table.grid tbody th{font-weight:500;white-space:nowrap}
 .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.grid small{color:var(--fg-dim);font-size:.7rem;font-weight:400}
+table.grid td.why{white-space:normal;min-width:260px;font-size:.8rem;line-height:1.5}
+table.grid td.why a{color:var(--accent)}
+.dim{color:var(--fg-dim)}
 .sig{display:inline-block;padding:2px 9px;border-radius:99px;font-size:.74rem;font-weight:600}
 .sig.buy{background:color-mix(in srgb,var(--up) 17%,transparent);color:var(--up)}
 .sig.flat{background:var(--grid);color:var(--fg-dim)}
@@ -281,16 +316,27 @@ def build(ctx: dict) -> str:
 売買の推奨ではなく、下の成績表を出しているルールが現在どう判断しているかの表示です。</p>
 {signal_table(ctx['signals'])}
 
-<h2>資産推移（元手100として)</h2>
-<p class="sub">直近{ctx['n_days']}日。手数料・スプレッド・スリッページを引いた後の金額です。</p>
-{multi_line(ctx['curves'])}
+<h2>1年ぶんの答え合わせ</h2>
+<p class="sub">{ctx['study']['from']} 〜 {ctx['study']['to']}（{ctx['study']['n_days']}日）の日足で、
+このサイトが判断の根拠にしてきた材料が「翌日どちらに動くか」を当てられていたかを調べた結果です。
+翌日の変化が ±0.5% 以内の日は判定なしとして数えません。</p>
+{edge_table(ctx['study'])}
+<p class="sub">セルは「多かった側とその割合／判定できた日数／p値」。p値は「実力が無くてもこれくらい偏るか」の目安で、
+0.05 未満だけが五分五分と言いにくい数字です。<b>どの材料も、翌日の方向をほとんど当てられていません。</b></p>
 
-<h2>戦略成績（直近{ctx['n_days']}日・売買コスト込み)</h2>
-{result_table(ctx['rows'])}
+<h2>コストの壁（往復コストを取り返すのに必要な的中率)</h2>
+<p class="sub">保有期間ごとの平均的な値幅に対して、売買コストを差し引いても黒字が残る的中率です。</p>
+{cost_table(ctx['study'])}
 
-<h2>検証結果</h2>
+<h2>大きく動いた日に何があったか</h2>
+<p class="sub">直近{ctx['study']['n_days']}日で BTC の値動きが大きかった10日。材料は
+<a href="https://github.com/Akatsuki1910/bitflyer/blob/main/knowledge/events.json">knowledge/events.json</a>
+に手で書き写したものです。</p>
+{moves_table(ctx['study'])}
+
+<h2>わかったこと</h2>
 <div class="verdict">
-{ctx['verdict_html']}
+{study_findings(ctx['study'])}
 </div>
 
 <div class="note">

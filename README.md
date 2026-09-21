@@ -45,6 +45,22 @@ BTC で「片道コストをいくらまで払えるか」を調べると:
 
 売買回数の多い戦略ほどコストに弱く、販売所で回すと確実に負けます。
 
+### 「翌日どちらに動くか」も当てられていない
+
+毎朝 `src/study.py` が、判断の根拠にしてきた材料（20日線・100日線との位置、その突破、
+直前の値動き、20日高値・安値の更新）を直近365日で検定し直しています
+（ダッシュボードの「1年ぶんの答え合わせ」）。
+
+| 調べたこと | 結果 |
+|---|---|
+| 11の材料 × 3銘柄 = 33通りのうち、翌日の方向が五分五分と言えないほど偏ったもの | **1通り**（偶然でも 1.7通り は出る水準） |
+| 翌日が前日と同じ向きに動いた割合 | BTC 51% / ETH 49% / BAT 48% |
+| 往復コストを取り返すのに必要な的中率（1日保有） | BTC 63% / ETH 60% / **BAT は不可能**（平均値幅3.5% < 往復4%） |
+| 同（60日保有） | BTC 51% / ETH 51% / BAT 57% |
+
+**1日で出入りする限り、必要な的中率に構造的に届きません。** 保有を長くするほど壁は低くなります。
+大きく動いた日の材料（関税・金利観測・法案・清算連鎖）は、いずれも動いた後に記事になったものでした。
+
 ---
 
 ## 使い方
@@ -106,20 +122,22 @@ src/
   run.py          コマンドラインの検証ツール
   verdict.py      多重検定まで含めた最終判定
   news.py         ニュース収集（CoinPost / Cointelegraph / CoinDesk の RSS）
+  study.py        1年ぶんの答え合わせ（判断の材料が翌日の方向を当てられたかの検定）
   dashboard.py    docs/index.html を生成
-  daily.py        毎朝のバックテスト更新（上記を全部つなげて commit & push）
+  daily.py        毎朝の更新（上記を全部つなげて commit & push）
   collect.py      朝昼晩の情報収集（板・参考値・Fear&Greed・市況・ニュース）
   rationale.py    「なぜその判断か」を数字つきの日本語にする
   paper.py        仮想口座。戦略×銘柄ごとに独立して仮売買を積み上げる
   db.py           Supabase(PostgREST)の最小クライアント
   sources.py      確認する情報ソースの原本。SOURCES.md と DB に書き出す
   routine.py      朝昼晩のルーティン本体
+knowledge/        判断の拠り所（playbook.md / lessons.md / events.json）
 docs/             GitHub Pages が配信する成果物
-  index.html      バックテストのダッシュボード
+  index.html      相場・今日のシグナル・1年ぶんの答え合わせ・ニュース
   db.html         仮売買の記録（Supabase を直接読む）
-  data/latest.json, data/history.json, data/routine.json
+  data/latest.json, data/history.json, data/routine.json, data/study.json
 SOURCES.md        毎回確認している情報ソース一覧（自動生成）
-.github/workflows/daily.yml     毎朝 06:30 JST にバックテストを更新
+.github/workflows/daily.yml     毎朝 06:30 JST にダッシュボードを更新
 .github/workflows/routine.yml   朝昼晩 07:17 / 12:17 / 20:17 JST に仮売買
 ```
 
