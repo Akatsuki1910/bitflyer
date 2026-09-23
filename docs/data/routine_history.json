@@ -2958,5 +2958,79 @@
         "cost_paid": 56167.63727023364
       }
     ]
+  },
+  {
+    "ran_at": "2026-09-24T00:26:46.385135+09:00",
+    "slot": "evening",
+    "run_id": 42,
+    "prices": {
+      "BTC": 13405176.0,
+      "ETH": 424497.0,
+      "BAT": 14.23
+    },
+    "n_trades": 0,
+    "summary": "晩のルーティン: 3銘柄 × 9戦略を判定＋Claudeの判断3銘柄、0件約定、ニュース28件。首位は BAT SMA 20/50 クロス (+22.27%)",
+    "standings": [
+      {
+        "symbol": "BAT",
+        "strategy": "SMA 20/50 クロス",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 85923.9401281985,
+        "equity": 1222697.6680242647,
+        "total_return": 0.22269766802426472,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 19607.843137255055
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "SMA 5/20 クロス",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 85923.9401281985,
+        "equity": 1222697.6680242647,
+        "total_return": 0.22269766802426472,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 19607.843137255055
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "買い持ち(Buy&Hold)",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 85923.9401281985,
+        "equity": 1222697.6680242647,
+        "total_return": 0.22269766802426472,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 19607.843137255055
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "RSI14 逆張り(30/70)",
+        "holding": false,
+        "cash": 1184770.8408516778,
+        "qty": 0.0,
+        "equity": 1184770.8408516778,
+        "total_return": 0.18477084085167772,
+        "n_trades": 2,
+        "realized_pnl": 184770.84085167793,
+        "cost_paid": 43786.83988933012
+      },
+      {
+        "symbol": "ETH",
+        "strategy": "100日線より上で保有",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 2.633889714265056,
+        "equity": 1118078.2820363734,
+        "total_return": 0.1180782820363735,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 2258.871228968492
+      }
+    ]
   }
 ]
