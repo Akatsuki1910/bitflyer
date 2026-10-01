@@ -1,15 +1,15 @@
 {
-  "generated_at": "2026-10-01T19:15:53.082948+09:00",
+  "generated_at": "2026-10-02T02:22:13.751515+09:00",
   "rules": {
     "flat_band": 0.005,
     "horizon_tolerance_h": 3.0,
     "reference": "判断の後に来た最初のルーティンの価格"
   },
   "summary": {
-    "n_calls": 42,
+    "n_calls": 45,
     "n_scored": 4,
     "n_void": 1,
-    "n_abstain": 34,
+    "n_abstain": 37,
     "n_pending": 3,
     "n": 4,
     "hit_rate": 0.25,
@@ -58,41 +58,41 @@
     "BTC": {
       "started_run_id": 7,
       "started_at": "2026-09-12T00:18:07.051714+00:00",
-      "return": -0.021379788265419974,
+      "return": -0.01333766114061441,
       "n_trades": 1,
       "cost_paid": 2126.8002233237494,
-      "buy_and_hold_same_period": 0.11604348166735723,
-      "rules_median_same_period": 0.11604348166735723,
+      "buy_and_hold_same_period": 0.12521492882199015,
+      "rules_median_same_period": 0.12521492882199015,
       "rank": 10,
       "of": 10,
       "table": [
         {
           "strategy": "買い持ち(Buy&Hold)",
-          "return": 0.11604348166735723
+          "return": 0.12521492882199015
         },
         {
           "strategy": "SMA 20/50 クロス",
-          "return": 0.11604348166735723
+          "return": 0.12521492882199015
         },
         {
           "strategy": "SMA 50/100 クロス",
-          "return": 0.11604348166735723
+          "return": 0.12521492882199015
         },
         {
           "strategy": "100日線より上で保有",
-          "return": 0.11604348166735723
+          "return": 0.12521492882199015
         },
         {
           "strategy": "3か月モメンタム",
-          "return": 0.11604348166735723
+          "return": 0.12521492882199015
         },
         {
           "strategy": "ドンチャン 20/10 ブレイク",
-          "return": 0.04042763562019136
+          "return": 0.04897768517924117
         },
         {
           "strategy": "SMA 5/20 クロス",
-          "return": 0.020194116545691587
+          "return": 0.02857789063788685
         },
         {
           "strategy": "MACD 12/26/9",
@@ -104,48 +104,48 @@
         },
         {
           "strategy": "Claudeの判断",
-          "return": -0.021379788265419974
+          "return": -0.01333766114061441
         }
       ]
     },
     "ETH": {
       "started_run_id": 7,
       "started_at": "2026-09-12T00:18:08.333653+00:00",
-      "return": -0.05829663960336828,
+      "return": -0.057298437095714694,
       "n_trades": 3,
       "cost_paid": 7383.119003135786,
-      "buy_and_hold_same_period": 0.10058654250331411,
-      "rules_median_same_period": 0.10058654250331411,
+      "buy_and_hold_same_period": 0.10175316066867146,
+      "rules_median_same_period": 0.10175316066867146,
       "rank": 10,
       "of": 10,
       "table": [
         {
           "strategy": "買い持ち(Buy&Hold)",
-          "return": 0.10058654250331411
+          "return": 0.10175316066867146
         },
         {
           "strategy": "SMA 20/50 クロス",
-          "return": 0.10058654250331411
+          "return": 0.10175316066867146
         },
         {
           "strategy": "SMA 50/100 クロス",
-          "return": 0.10058654250331411
+          "return": 0.10175316066867146
         },
         {
           "strategy": "100日線より上で保有",
-          "return": 0.10058654250331411
+          "return": 0.10175316066867146
         },
         {
           "strategy": "3か月モメンタム",
-          "return": 0.10058654250331411
+          "return": 0.10175316066867146
         },
         {
           "strategy": "ドンチャン 20/10 ブレイク",
-          "return": 0.04778667184827867
+          "return": 0.048897322321995285
         },
         {
           "strategy": "SMA 5/20 クロス",
-          "return": 0.03667755001892492
+          "return": 0.03777642485953425
         },
         {
           "strategy": "RSI14 逆張り(30/70)",
@@ -157,7 +157,7 @@
         },
         {
           "strategy": "Claudeの判断",
-          "return": -0.05829663960336828
+          "return": -0.057298437095714694
         }
       ]
     },
@@ -167,22 +167,22 @@
       "return": 0.0,
       "n_trades": 0,
       "cost_paid": 0.0,
-      "buy_and_hold_same_period": 0.26877828054298614,
-      "rules_median_same_period": 0.14217544253222014,
+      "buy_and_hold_same_period": 0.2733031674208144,
+      "rules_median_same_period": 0.1462488214285549,
       "rank": 9,
       "of": 10,
       "table": [
         {
           "strategy": "買い持ち(Buy&Hold)",
-          "return": 0.26877828054298614
+          "return": 0.2733031674208144
         },
         {
           "strategy": "SMA 5/20 クロス",
-          "return": 0.26877828054298614
+          "return": 0.2733031674208144
         },
         {
           "strategy": "SMA 20/50 クロス",
-          "return": 0.26877828054298614
+          "return": 0.2733031674208144
         },
         {
           "strategy": "RSI14 逆張り(30/70)",
@@ -190,15 +190,15 @@
         },
         {
           "strategy": "ドンチャン 20/10 ブレイク",
-          "return": 0.14217544253222014
+          "return": 0.1462488214285549
         },
         {
           "strategy": "MACD 12/26/9",
-          "return": 0.052241924463720224
+          "return": 0.055994570414018785
         },
         {
           "strategy": "100日線より上で保有",
-          "return": 0.038119241887023536
+          "return": 0.04182152163697728
         },
         {
           "strategy": "SMA 50/100 クロス",
@@ -210,12 +210,78 @@
         },
         {
           "strategy": "3か月モメンタム",
-          "return": -0.023091823794194277
+          "return": -0.019607843137254832
         }
       ]
     }
   },
   "calls": [
+    {
+      "id": "2026-10-02-BTC",
+      "symbol": "BTC",
+      "made_at": "2026-10-02T01:13:35+09:00",
+      "position": "long",
+      "outlook": "flat",
+      "confidence": null,
+      "horizon_h": 24,
+      "playbook_refs": [
+        "P-01",
+        "P-02",
+        "P-05",
+        "P-08",
+        "P-09",
+        "I-12"
+      ],
+      "status": "pending",
+      "ref_run_id": 66,
+      "ref_at": "2026-10-01T17:21:46.622802+00:00",
+      "ref_price": 13363407.5,
+      "waiting_for": "基準から約24時間後のルーティン"
+    },
+    {
+      "id": "2026-10-02-ETH",
+      "symbol": "ETH",
+      "made_at": "2026-10-02T01:13:35+09:00",
+      "position": "long",
+      "outlook": "flat",
+      "confidence": null,
+      "horizon_h": 24,
+      "playbook_refs": [
+        "P-01",
+        "P-02",
+        "P-05",
+        "P-08",
+        "P-09",
+        "I-12"
+      ],
+      "status": "pending",
+      "ref_run_id": 66,
+      "ref_at": "2026-10-01T17:21:46.622802+00:00",
+      "ref_price": 425924.0,
+      "waiting_for": "基準から約24時間後のルーティン"
+    },
+    {
+      "id": "2026-10-02-BAT",
+      "symbol": "BAT",
+      "made_at": "2026-10-02T01:13:35+09:00",
+      "position": "flat",
+      "outlook": "flat",
+      "confidence": null,
+      "horizon_h": 24,
+      "playbook_refs": [
+        "P-01",
+        "P-04",
+        "P-05",
+        "P-08",
+        "B-01",
+        "X-01"
+      ],
+      "status": "pending",
+      "ref_run_id": 66,
+      "ref_at": "2026-10-01T17:21:46.622802+00:00",
+      "ref_price": 14.07,
+      "waiting_for": "基準から約24時間後のルーティン"
+    },
     {
       "id": "2026-10-01-BTC",
       "symbol": "BTC",
@@ -232,11 +298,16 @@
         "P-09",
         "I-03"
       ],
-      "status": "pending",
+      "status": "abstain",
       "ref_run_id": 63,
       "ref_at": "2026-09-30T16:49:11.019175+00:00",
       "ref_price": 13267238.5,
-      "waiting_for": "基準から約24時間後のルーティン"
+      "outcome_run_id": 66,
+      "outcome_at": "2026-10-01T17:21:46.622802+00:00",
+      "outcome_price": 13363407.5,
+      "change": 0.007248607161166154,
+      "realized": "up",
+      "elapsed_h": 24.543223229722223
     },
     {
       "id": "2026-10-01-ETH",
@@ -254,11 +325,16 @@
         "P-08",
         "P-09"
       ],
-      "status": "pending",
+      "status": "abstain",
       "ref_run_id": 63,
       "ref_at": "2026-09-30T16:49:11.019175+00:00",
       "ref_price": 423141.0,
-      "waiting_for": "基準から約24時間後のルーティン"
+      "outcome_run_id": 66,
+      "outcome_at": "2026-10-01T17:21:46.622802+00:00",
+      "outcome_price": 425924.0,
+      "change": 0.006577003882866528,
+      "realized": "up",
+      "elapsed_h": 24.543223229722223
     },
     {
       "id": "2026-10-01-BAT",
@@ -276,11 +352,16 @@
         "B-01",
         "X-01"
       ],
-      "status": "pending",
+      "status": "abstain",
       "ref_run_id": 63,
       "ref_at": "2026-09-30T16:49:11.019175+00:00",
       "ref_price": 14.34,
-      "waiting_for": "基準から約24時間後のルーティン"
+      "outcome_run_id": 66,
+      "outcome_at": "2026-10-01T17:21:46.622802+00:00",
+      "outcome_price": 14.07,
+      "change": -0.01882845188284521,
+      "realized": "down",
+      "elapsed_h": 24.543223229722223
     },
     {
       "id": "2026-09-30-BTC",
