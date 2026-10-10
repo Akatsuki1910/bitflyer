@@ -1,86 +1,86 @@
 {
-  "run_id": 89,
-  "slot": "evening",
-  "slot_ja": "晩",
-  "ran_at": "2026-10-10T02:26:18.229674+09:00",
-  "summary": "晩のルーティン: 3銘柄 × 9戦略を判定＋Claudeの判断3銘柄、1件約定、ニュース35件。首位は BAT SMA 20/50 クロス (+83.71%)",
+  "run_id": 90,
+  "slot": "morning",
+  "slot_ja": "朝",
+  "ran_at": "2026-10-10T10:45:16.704957+09:00",
+  "summary": "朝のルーティン: 3銘柄 × 9戦略を判定＋Claudeの判断3銘柄、0件約定、ニュース27件。首位は BAT SMA 20/50 クロス (+88.77%)",
   "market": {
     "BTC": {
       "venue": "板(Lightning)",
       "product_code": "BTC_JPY",
-      "price": 13081131.0,
-      "best_bid": 13079345.0,
-      "best_ask": 13082917.0,
-      "spread": 0.00013653253682728198,
-      "volume_24h": 201.8549395,
-      "ltp": 13078344.0,
-      "change_24h": 0.02829485080111547,
-      "reference_price": 13051640.0,
+      "price": 13094491.0,
+      "best_bid": 13092939.0,
+      "best_ask": 13096043.0,
+      "spread": 0.00011852312548842105,
+      "volume_24h": 156.66832016,
+      "ltp": 13094946.0,
+      "change_24h": 0.010915858305837514,
+      "reference_price": 13073206.0,
       "hanbaijo_only": false
     },
     "ETH": {
       "venue": "板(Lightning)",
       "product_code": "ETH_JPY",
-      "price": 393447.0,
-      "best_bid": 393277.0,
-      "best_ask": 393617.0,
-      "spread": 0.00043207852645972647,
-      "volume_24h": 2205.1418371,
-      "ltp": 393067.0,
-      "change_24h": 0.03262545203306984,
-      "reference_price": 392583.0,
+      "price": 394893.5,
+      "best_bid": 394812.0,
+      "best_ask": 394975.0,
+      "spread": 0.00020638475943513885,
+      "volume_24h": 1558.3057153,
+      "ltp": 394902.0,
+      "change_24h": 0.006117288104487523,
+      "reference_price": 394125.0,
       "hanbaijo_only": false
     },
     "BAT": {
       "venue": "参考(CoinGecko)",
-      "price": 21.38,
-      "change_24h": 0.42870177128405657,
-      "volume_24h": 8340767789.0147915,
-      "reference_price": 21.38,
+      "price": 21.97,
+      "change_24h": 0.3607669839746109,
+      "volume_24h": 13522570395.855242,
+      "reference_price": 21.97,
       "hanbaijo_only": true
     }
   },
   "indicators": {
     "fear_greed": {
       "label": "Fear & Greed Index (Greed)",
-      "value": 59,
+      "value": 64,
       "text": "Greed",
       "source": "alternative.me"
     },
     "btc_dominance": {
       "label": "BTC ドミナンス(%)",
-      "value": 59.21514546533454,
+      "value": 59.13513661794032,
       "source": "CoinGecko /global"
     },
     "total_market_cap_jpy": {
       "label": "暗号資産の時価総額合計(円)",
-      "value": 442259380648722.94,
+      "value": 443459271962179.4,
       "source": "CoinGecko /global"
     },
     "market_cap_change_24h": {
       "label": "時価総額の24時間変化(%)",
-      "value": -0.7399700128241278,
+      "value": -1.853051235310051,
       "source": "CoinGecko /global"
     },
     "fx_premium": {
       "label": "FX_BTC_JPY の現物乖離(%)",
-      "value": -0.012888793790077901,
+      "value": -0.06705873485269853,
       "source": "bitFlyer getticker"
     },
     "spread_BTC": {
       "label": "BTC 板スプレッド片道(%)",
-      "value": 0.013653253682728198,
+      "value": 0.011852312548842106,
       "source": "bitFlyer getticker"
     },
     "spread_ETH": {
       "label": "ETH 板スプレッド片道(%)",
-      "value": 0.04320785264597265,
+      "value": 0.020638475943513885,
       "source": "bitFlyer getticker"
     },
     "news_tone_BTC": {
       "label": "BTC ニュースのトーン",
-      "value": -14,
-      "text": "弱気寄り / 30件",
+      "value": -12,
+      "text": "弱気寄り / 22件",
       "source": "RSS"
     },
     "news_tone_ETH": {
@@ -92,11 +92,35 @@
     "news_tone_BAT": {
       "label": "BAT ニュースのトーン",
       "value": 0,
-      "text": "中立 / 1件",
+      "text": "中立 / 0件",
       "source": "RSS"
     }
   },
   "news": [
+    {
+      "source": "Cointelegraph",
+      "lang": "en",
+      "title": "THORChain exec accuses Tether of temporarily freezing USDT vaults",
+      "link": "https://cointelegraph.com/news/thorchain-tether-freezing-usdt-addresses?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "summary": "Chad Barraford, technical co-founder of the network, said that the funds were frozen and then unfrozen without explanation. ",
+      "published": "2026-10-10T04:04:03+09:00",
+      "coins": [
+        "ETH"
+      ],
+      "score": 0
+    },
+    {
+      "source": "Cointelegraph",
+      "lang": "en",
+      "title": "Here’s what happened in crypto today",
+      "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "summary": "Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, Web3 and crypto regulation.",
+      "published": "2026-10-10T03:30:11+09:00",
+      "coins": [
+        "BTC"
+      ],
+      "score": 0
+    },
     {
       "source": "Cointelegraph",
       "lang": "en",
@@ -119,18 +143,6 @@
       "coins": [
         "BTC",
         "ETH"
-      ],
-      "score": 0
-    },
-    {
-      "source": "Cointelegraph",
-      "lang": "en",
-      "title": "Here’s what happened in crypto today",
-      "link": "https://cointelegraph.com/news/what-happened-in-crypto-today?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
-      "summary": "Need to know what happened in crypto today? Here is the latest news on daily trends and events impacting Bitcoin price, blockchain, DeFi, Web3 and crypto regulation.",
-      "published": "2026-10-09T22:31:41+09:00",
-      "coins": [
-        "BTC"
       ],
       "score": 0
     },
@@ -257,18 +269,6 @@
       "score": 0
     },
     {
-      "source": "CoinPost",
-      "lang": "ja",
-      "title": "ビットコイン短期保有者、含み損での取引所送金が6月以来最大＝クリプトクアント",
-      "link": "https://coinpost.jp/?p=742191",
-      "summary": "オンチェーン分析企業クリプトクアントによると、ビットコインの短期保有者が24時間で4万5,600BTCを取引所へ送り、うち2万9,100BTCが損失状態だった。米政府の送金を下落の契機としつつ、含み益の積み上がりを本質的な要因とみる。",
-      "published": "2026-10-09T17:57:40+09:00",
-      "coins": [
-        "BTC"
-      ],
-      "score": -1
-    },
-    {
       "source": "Cointelegraph",
       "lang": "en",
       "title": "Bitcoin, Ether ETFs’ October outflows swell toward $1B",
@@ -282,28 +282,16 @@
       "score": -2
     },
     {
-      "source": "CoinPost",
-      "lang": "ja",
-      "title": "ビットコイン、利益確定が年内2番目の規模に　1日約10.3億ドル＝サンティメント",
-      "link": "https://coinpost.jp/?p=742150",
-      "summary": "オンチェーン分析企業サンティメントによると、ビットコインの実現利益が1日で約10.3億ドルに達し、2026年で2番目の規模となった。8万7000ドル超えまでの上昇を受けた利益確定の集中が、短期的な売り圧力として意識される。",
-      "published": "2026-10-09T16:18:06+09:00",
-      "coins": [
-        "BTC"
-      ],
-      "score": 0
-    },
-    {
       "source": "CoinDesk",
       "lang": "en",
-      "title": "Live updates: Bitcoin steadies near $83,000 as crypto recovers from Thursday selloff",
+      "title": "Live updates: Bitcoin slips from day's highs, set to close week with a loss",
       "link": "https://www.coindesk.com/business/2026/10/09/live-updates-xrp-etfs-the-only-ones-in-green-as-btc-eth-zec-funds-post-outflows",
       "summary": "Bitcoin ETFs lost $244 million on Thursday and the ZEC fund extended a run of October outflows. Bitcoin is back near $82,000 after a $1 billion liquidation.",
       "published": "2026-10-09T15:51:32+09:00",
       "coins": [
         "BTC"
       ],
-      "score": -3
+      "score": -2
     },
     {
       "source": "CoinDesk",
@@ -312,18 +300,6 @@
       "link": "https://www.coindesk.com/markets/2026/10/09/new-tech-to-power-bitcoin-lending-is-set-to-debut-with-usd500-million-in-commitments",
       "summary": "Layer-1 blockchain Sui is launching Hashi, an institutional protocol allowing holders to use bitcoin as collateral without moving it off the Bitcoin network.",
       "published": "2026-10-09T15:40:54+09:00",
-      "coins": [
-        "BTC"
-      ],
-      "score": 0
-    },
-    {
-      "source": "CoinPost",
-      "lang": "ja",
-      "title": "量子攻撃受け得るビットコイン、現在供給量の31.2％に増加＝グラスノード",
-      "link": "https://coinpost.jp/?p=742115",
-      "summary": "グラスノード共同創業者は8日、公開鍵がオンチェーンで露出したビットコインが626万BTC（供給の31.2％）に上ると集計した。量子コンピューターへの備えとして資産移行を求める声が出るなか、取引所や政府保有分ごとの露出割合も示した。",
-      "published": "2026-10-09T14:40:02+09:00",
       "coins": [
         "BTC"
       ],
@@ -368,30 +344,6 @@
       "score": 0
     },
     {
-      "source": "CoinPost",
-      "lang": "ja",
-      "title": "ビットコインコア、送信元を隠す機能の修正を次期版に反映｜現行版は未反映",
-      "link": "https://coinpost.jp/?p=741992",
-      "summary": "ビットコインコアは、オプション機能のプライベートブロードキャストの接続が通常の接続と関連付けられうる問題の修正を、10月1日に32.x系へ反映した。31.x系向けの反映は未了で、リリース日は決まっていない。",
-      "published": "2026-10-09T11:45:11+09:00",
-      "coins": [
-        "BTC"
-      ],
-      "score": 0
-    },
-    {
-      "source": "CoinPost",
-      "lang": "ja",
-      "title": "ビットコイン採掘事業者による売り圧力は緩和傾向＝クリプトクアント",
-      "link": "https://coinpost.jp/?p=741947",
-      "summary": "クリプトクアントは8日、仮想通貨市場の週間レポートを発表。ビットコイン・マイナーをめぐる収益などの状況が回復し売り圧力が和らいだと分析している。",
-      "published": "2026-10-09T10:05:07+09:00",
-      "coins": [
-        "BTC"
-      ],
-      "score": -2
-    },
-    {
       "source": "Cointelegraph",
       "lang": "en",
       "title": "Cantor Fitzgerald faces Senate Democrat’s questions over Tether ties",
@@ -402,12 +354,61 @@
         "ETH"
       ],
       "score": -1
+    },
+    {
+      "source": "CoinDesk",
+      "lang": "en",
+      "title": "Top Democrat among Senate investigators probes ties between Cantor Fitzgerald, Tether",
+      "link": "https://www.coindesk.com/policy/2026/10/08/top-democrat-among-senate-investigators-probes-ties-between-cantor-fitzgerald-tether",
+      "summary": "As Democrats steadily rise in their potential to take back a Senate majority, Senator Richard Blumenthal is digging into Tether's U.S. financial partnership.",
+      "published": "2026-10-09T06:22:58+09:00",
+      "coins": [
+        "ETH"
+      ],
+      "score": 0
+    },
+    {
+      "source": "CoinDesk",
+      "lang": "en",
+      "title": "Wall Street's tokenization boom could have bigger winners than bitcoin and ether, Citrini says",
+      "link": "https://www.coindesk.com/markets/2026/10/08/wall-street-s-tokenization-boom-could-have-bigger-winners-than-bitcoin-and-ether-citrini-says",
+      "summary": "The research firm sees tokenized stocks, bonds and loans creating new markets for trading and lending, with fee-generating platforms and companies poised to benefit.",
+      "published": "2026-10-09T04:46:15+09:00",
+      "coins": [
+        "BTC",
+        "ETH"
+      ],
+      "score": 0
+    },
+    {
+      "source": "CoinDesk",
+      "lang": "en",
+      "title": "Crypto crumbles as anniversary of flash crash nears",
+      "link": "https://www.coindesk.com/markets/2026/10/08/crypto-crumbles-as-anniversary-of-flash-crash-nears",
+      "summary": "It was October 10, 2025, when bitcoin plunged from about $122,000 to $105,000, with much of the decline occurring within minutes.",
+      "published": "2026-10-09T03:14:39+09:00",
+      "coins": [
+        "BTC"
+      ],
+      "score": -2
+    },
+    {
+      "source": "Cointelegraph",
+      "lang": "en",
+      "title": "Bitcoin nears 3-week low as oil heads higher on Iran strike woes",
+      "link": "https://cointelegraph.com/markets/bitcoin-nears-3-week-low-as-oil-heads-higher-on-iran-strike-woes?utm_source=rss_feed&utm_medium=rss&utm_campaign=rss_partner_inbound",
+      "summary": "Bitcoin dipped below $81,000 and oil prices gained after reports that military confrontation between the US and Iran could return.",
+      "published": "2026-10-09T00:55:55+09:00",
+      "coins": [
+        "BTC"
+      ],
+      "score": 1
     }
   ],
   "news_tone": {
     "BTC": {
-      "count": 30,
-      "tone": -14,
+      "count": 22,
+      "tone": -12,
       "mood": "弱気寄り"
     },
     "ETH": {
@@ -416,7 +417,7 @@
       "mood": "弱気寄り"
     },
     "BAT": {
-      "count": 1,
+      "count": 0,
       "tone": 0,
       "mood": "中立"
     }
@@ -427,10 +428,10 @@
       "strategy": "買い持ち(Buy&Hold)",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "買い持ちは常に保有。現在値 13,081,131円。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "買い持ちは常に保有。現在値 13,094,491円。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
-        "cost_rate_pct": 0.21365325368272822,
+        "price": 13094491.0,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -438,14 +439,14 @@
       "symbol": "BTC",
       "strategy": "SMA 5/20 クロス",
       "signal": 0,
-      "action": "売り",
-      "rationale": "短期5日線 13,272,832円 が長期20日線 13,304,458円 の下（乖離 -0.24%）。上なら保有、下なら現金。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "action": "様子見",
+      "rationale": "短期5日線 13,252,504円 が長期20日線 13,299,376円 の下（乖離 -0.35%）。上なら保有、下なら現金。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
-        "sma5": 13272832.344404407,
-        "sma20": 13304457.639838632,
-        "gap_pct": -0.23770450694304834,
-        "cost_rate_pct": 0.21365325368272822,
+        "price": 13094491.0,
+        "sma5": 13252503.921603158,
+        "sma20": 13299375.53413832,
+        "gap_pct": -0.3524346869884676,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -454,13 +455,13 @@
       "strategy": "SMA 20/50 クロス",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "短期20日線 13,304,458円 が長期50日線 12,699,622円 の上（乖離 +4.76%）。上なら保有、下なら現金。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "短期20日線 13,299,376円 が長期50日線 12,697,589円 の上（乖離 +4.74%）。上なら保有、下なら現金。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
-        "sma20": 13304457.639838632,
-        "sma50": 12699621.507459486,
-        "gap_pct": 4.762631169943754,
-        "cost_rate_pct": 0.21365325368272822,
+        "price": 13094491.0,
+        "sma20": 13299375.53413832,
+        "sma50": 12697588.66517936,
+        "gap_pct": 4.7393791437679855,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -469,13 +470,13 @@
       "strategy": "SMA 50/100 クロス",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "短期50日線 12,699,622円 が長期100日線 11,515,041円 の上（乖離 +10.29%）。上なら保有、下なら現金。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "短期50日線 12,697,589円 が長期100日線 11,514,024円 の上（乖離 +10.28%）。上なら保有、下なら現金。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
-        "sma50": 12699621.507459486,
-        "sma100": 11515040.861216381,
-        "gap_pct": 10.287246571854315,
-        "cost_rate_pct": 0.21365325368272822,
+        "price": 13094491.0,
+        "sma50": 12697588.66517936,
+        "sma100": 11514024.440076318,
+        "gap_pct": 10.279327017784222,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -484,12 +485,12 @@
       "strategy": "100日線より上で保有",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "現在値 13,081,131円 が100日線 11,515,041円 を上回っている（+13.60%）。上なら保有。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "現在値 13,094,491円 が100日線 11,514,024円 を上回っている（+13.73%）。上なら保有。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
-        "sma100": 11515040.861216381,
-        "gap_pct": 13.600387160225736,
-        "cost_rate_pct": 0.21365325368272822,
+        "price": 13094491.0,
+        "sma100": 11514024.440076318,
+        "gap_pct": 13.726447847571244,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -498,13 +499,13 @@
       "strategy": "RSI14 逆張り(30/70)",
       "signal": 0,
       "action": "様子見",
-      "rationale": "RSI14 は 51.9。30〜70の中立ゾーンなので前回の状態を引き継ぐ。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "RSI14 は 52.2。30〜70の中立ゾーンなので前回の状態を引き継ぐ。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
-        "rsi14": 51.93039686870575,
+        "price": 13094491.0,
+        "rsi14": 52.20181776955143,
         "buy_below": 30,
         "sell_above": 70,
-        "cost_rate_pct": 0.21365325368272822,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -513,12 +514,12 @@
       "strategy": "ドンチャン 20/10 ブレイク",
       "signal": 0,
       "action": "様子見",
-      "rationale": "現在値 13,081,131円 / 20日高値 13,643,831円 / 10日安値 13,025,804円。高値と安値の間なので前回の状態を継続。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "現在値 13,094,491円 / 20日高値 13,643,831円 / 10日安値 12,910,802円。高値と安値の間なので前回の状態を継続。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
+        "price": 13094491.0,
         "high20": 13643831.34745595,
-        "low10": 13025803.707117204,
-        "cost_rate_pct": 0.21365325368272822,
+        "low10": 12910801.59311096,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -527,12 +528,12 @@
       "strategy": "3か月モメンタム",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "90日前 10,331,988円 に対して現在値 13,081,131円 は高い（+26.61%）。高ければ保有。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "90日前 10,331,988円 に対して現在値 13,094,491円 は高い（+26.74%）。高ければ保有。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
+        "price": 13094491.0,
         "price_90d_ago": 10331987.760874305,
-        "change_pct": 26.608076807216996,
-        "cost_rate_pct": 0.21365325368272822,
+        "change_pct": 26.73738396774803,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -541,13 +542,13 @@
       "strategy": "MACD 12/26/9",
       "signal": 0,
       "action": "様子見",
-      "rationale": "MACD線 214,867 がシグナル線 293,817 の下（ヒストグラム -78,950）。上なら保有。 参考: 直近のニュース30件のトーンは弱気寄り。 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "MACD線 208,850 がシグナル線 291,146 の下（ヒストグラム -82,296）。上なら保有。 参考: 直近のニュース22件のトーンは弱気寄り。 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
-        "macd": 214866.8765757829,
-        "macd_signal": 293817.03273686685,
-        "histogram": -78950.15616108396,
-        "cost_rate_pct": 0.21365325368272822,
+        "price": 13094491.0,
+        "macd": 208849.60430544615,
+        "macd_signal": 291145.74503385636,
+        "histogram": -82296.14072841022,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -556,10 +557,10 @@
       "strategy": "買い持ち(Buy&Hold)",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "買い持ちは常に保有。現在値 393,447円。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "買い持ちは常に保有。現在値 394,894円。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
-        "cost_rate_pct": 0.24320785264597264,
+        "price": 394893.5,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -568,13 +569,13 @@
       "strategy": "SMA 5/20 クロス",
       "signal": 0,
       "action": "様子見",
-      "rationale": "短期5日線 409,870円 が長期20日線 421,333円 の下（乖離 -2.72%）。上なら保有、下なら現金。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "短期5日線 409,535円 が長期20日線 421,250円 の下（乖離 -2.78%）。上なら保有、下なら現金。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
-        "sma5": 409869.6567356557,
-        "sma20": 421333.4094439418,
-        "gap_pct": -2.7208268917994105,
-        "cost_rate_pct": 0.24320785264597264,
+        "price": 394893.5,
+        "sma5": 409535.41413236473,
+        "sma20": 421249.8487931191,
+        "gap_pct": -2.7808756951049785,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -583,13 +584,13 @@
       "strategy": "SMA 20/50 クロス",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "短期20日線 421,333円 が長期50日線 401,789円 の上（乖離 +4.86%）。上なら保有、下なら現金。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "短期20日線 421,250円 が長期50日線 401,756円 の上（乖離 +4.85%）。上なら保有、下なら現金。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
-        "sma20": 421333.4094439418,
-        "sma50": 401789.45451660967,
-        "gap_pct": 4.8642279451672765,
-        "cost_rate_pct": 0.24320785264597264,
+        "price": 394893.5,
+        "sma20": 421249.8487931191,
+        "sma50": 401756.0302562807,
+        "gap_pct": 4.8521533141402395,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -598,13 +599,13 @@
       "strategy": "SMA 50/100 クロス",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "短期50日線 401,789円 が長期100日線 351,821円 の上（乖離 +14.20%）。上なら保有、下なら現金。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "短期50日線 401,756円 が長期100日線 351,805円 の上（乖離 +14.20%）。上なら保有、下なら現金。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
-        "sma50": 401789.45451660967,
-        "sma100": 351821.3117119027,
-        "gap_pct": 14.202704936085464,
-        "cost_rate_pct": 0.24320785264597264,
+        "price": 394893.5,
+        "sma50": 401756.0302562807,
+        "sma100": 351804.5995817382,
+        "gap_pct": 14.198629220291581,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -613,12 +614,12 @@
       "strategy": "100日線より上で保有",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "現在値 393,447円 が100日線 351,821円 を上回っている（+11.83%）。上なら保有。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "現在値 394,894円 が100日線 351,805円 を上回っている（+12.25%）。上なら保有。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
-        "sma100": 351821.3117119027,
-        "gap_pct": 11.831485729376023,
-        "cost_rate_pct": 0.24320785264597264,
+        "price": 394893.5,
+        "sma100": 351804.5995817382,
+        "gap_pct": 12.247963917893735,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -627,13 +628,13 @@
       "strategy": "RSI14 逆張り(30/70)",
       "signal": 0,
       "action": "様子見",
-      "rationale": "RSI14 は 39.6。30〜70の中立ゾーンなので前回の状態を引き継ぐ。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "RSI14 は 41.2。30〜70の中立ゾーンなので前回の状態を引き継ぐ。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
-        "rsi14": 39.557105843362244,
+        "price": 394893.5,
+        "rsi14": 41.23831429529594,
         "buy_below": 30,
         "sell_above": 70,
-        "cost_rate_pct": 0.24320785264597264,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -642,12 +643,12 @@
       "strategy": "ドンチャン 20/10 ブレイク",
       "signal": 0,
       "action": "様子見",
-      "rationale": "現在値 393,447円 / 20日高値 436,735円 / 10日安値 393,943円。直近10日安値を割ったので手仕舞い。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "現在値 394,894円 / 20日高値 436,735円 / 10日安値 390,825円。高値と安値の間なので前回の状態を継続。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
+        "price": 394893.5,
         "high20": 436735.2335136728,
-        "low10": 393942.6704710796,
-        "cost_rate_pct": 0.24320785264597264,
+        "low10": 390824.9574546253,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -656,12 +657,12 @@
       "strategy": "3か月モメンタム",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "90日前 289,586円 に対して現在値 393,447円 は高い（+35.87%）。高ければ保有。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "90日前 289,586円 に対して現在値 394,894円 は高い（+36.36%）。高ければ保有。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
+        "price": 394893.5,
         "price_90d_ago": 289585.6900741284,
-        "change_pct": 35.865484202373786,
-        "cost_rate_pct": 0.24320785264597264,
+        "change_pct": 36.3649909285624,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -670,13 +671,13 @@
       "strategy": "MACD 12/26/9",
       "signal": 0,
       "action": "様子見",
-      "rationale": "MACD線 3,141 がシグナル線 8,544 の下（ヒストグラム -5,403）。上なら保有。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "MACD線 3,065 がシグナル線 8,489 の下（ヒストグラム -5,425）。上なら保有。 参考: 直近のニュース12件のトーンは弱気寄り。 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
-        "macd": 3141.1848353379755,
-        "macd_signal": 8544.26819560698,
-        "histogram": -5403.083360269004,
-        "cost_rate_pct": 0.24320785264597264,
+        "price": 394893.5,
+        "macd": 3064.553928424488,
+        "macd_signal": 8489.148982055467,
+        "histogram": -5424.595053630979,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -685,9 +686,9 @@
       "strategy": "買い持ち(Buy&Hold)",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "買い持ちは常に保有。現在値 21円。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "買い持ちは常に保有。現在値 22円。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
+        "price": 21.97,
         "cost_rate_pct": 2.0,
         "venue": "販売所"
       }
@@ -697,12 +698,12 @@
       "strategy": "SMA 5/20 クロス",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "短期5日線 18円 が長期20日線 15円 の上（乖離 +15.78%）。上なら保有、下なら現金。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "短期5日線 17円 が長期20日線 15円 の上（乖離 +14.63%）。上なら保有、下なら現金。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
-        "sma5": 17.63694508572677,
-        "sma20": 15.233438766371616,
-        "gap_pct": 15.777831625653583,
+        "price": 21.97,
+        "sma5": 17.392446154476044,
+        "sma20": 15.172314033558939,
+        "gap_pct": 14.632785190225416,
         "cost_rate_pct": 2.0,
         "venue": "販売所"
       }
@@ -712,12 +713,12 @@
       "strategy": "SMA 20/50 クロス",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "短期20日線 15円 が長期50日線 13円 の上（乖離 +18.31%）。上なら保有、下なら現金。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "短期20日線 15円 が長期50日線 13円 の上（乖離 +18.05%）。上なら保有、下なら現金。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
-        "sma20": 15.233438766371616,
-        "sma50": 12.876399259218461,
-        "gap_pct": 18.30511356244027,
+        "price": 21.97,
+        "sma20": 15.172314033558939,
+        "sma50": 12.851949366093388,
+        "gap_pct": 18.05457367881673,
         "cost_rate_pct": 2.0,
         "venue": "販売所"
       }
@@ -727,12 +728,12 @@
       "strategy": "SMA 50/100 クロス",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "短期50日線 13円 が長期100日線 12円 の上（乖離 +4.70%）。上なら保有、下なら現金。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "短期50日線 13円 が長期100日線 12円 の上（乖離 +4.61%）。上なら保有、下なら現金。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
-        "sma50": 12.876399259218461,
-        "sma100": 12.298274821481657,
-        "gap_pct": 4.7008580156867374,
+        "price": 21.97,
+        "sma50": 12.851949366093388,
+        "sma100": 12.286049874919124,
+        "gap_pct": 4.606032833461771,
         "cost_rate_pct": 2.0,
         "venue": "販売所"
       }
@@ -742,11 +743,11 @@
       "strategy": "100日線より上で保有",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "現在値 21円 が100日線 12円 を上回っている（+73.85%）。上なら保有。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "現在値 22円 が100日線 12円 を上回っている（+78.82%）。上なら保有。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
-        "sma100": 12.298274821481657,
-        "gap_pct": 73.84552150887944,
+        "price": 21.97,
+        "sma100": 12.286049874919124,
+        "gap_pct": 78.82069683641603,
         "cost_rate_pct": 2.0,
         "venue": "販売所"
       }
@@ -756,10 +757,10 @@
       "strategy": "RSI14 逆張り(30/70)",
       "signal": 0,
       "action": "様子見",
-      "rationale": "RSI14 は 82.5。買われすぎ(70超)なので手仕舞う水準。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "RSI14 は 83.6。買われすぎ(70超)なので手仕舞う水準。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
-        "rsi14": 82.47700974463305,
+        "price": 21.97,
+        "rsi14": 83.57321602331082,
         "buy_below": 30,
         "sell_above": 70,
         "cost_rate_pct": 2.0,
@@ -771,10 +772,10 @@
       "strategy": "ドンチャン 20/10 ブレイク",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "現在値 21円 / 20日高値 18円 / 10日安値 14円。直近20日高値を上抜けたので買い。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "現在値 22円 / 20日高値 17円 / 10日安値 14円。直近20日高値を上抜けたので買い。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
-        "high20": 18.018787286891985,
+        "price": 21.97,
+        "high20": 16.7440444430437,
         "low10": 14.114953519209614,
         "cost_rate_pct": 2.0,
         "venue": "販売所"
@@ -785,11 +786,11 @@
       "strategy": "3か月モメンタム",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "90日前 14円 に対して現在値 21円 は高い（+55.40%）。高ければ保有。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "90日前 14円 に対して現在値 22円 は高い（+59.69%）。高ければ保有。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
+        "price": 21.97,
         "price_90d_ago": 13.75793531975464,
-        "change_pct": 55.40122484295333,
+        "change_pct": 59.68965901775887,
         "cost_rate_pct": 2.0,
         "venue": "販売所"
       }
@@ -799,12 +800,12 @@
       "strategy": "MACD 12/26/9",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "MACD線 2 がシグナル線 1 の上（ヒストグラム +0）。上なら保有。 参考: 直近のニュース1件のトーンは中立。 往復コストは約4.00%（販売所）。",
+      "rationale": "MACD線 2 がシグナル線 1 の上（ヒストグラム +0）。上なら保有。 参考: 直近のニュース0件のトーンは中立。 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
-        "macd": 1.5807795499217896,
-        "macd_signal": 1.1242459618620897,
-        "histogram": 0.4565335880596999,
+        "price": 21.97,
+        "macd": 1.5162127894961444,
+        "macd_signal": 1.0881987748528086,
+        "histogram": 0.42801401464333577,
         "cost_rate_pct": 2.0,
         "venue": "販売所"
       }
@@ -814,14 +815,14 @@
       "strategy": "Claudeの判断",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "日足終値 約1,345万円は100日線（約1,133万円）の約19%上、50日線（約1,243万円）・20日線（約1,303万円）の上で、数週間の地合いは崩れていない（P-05, L-009 の既定は long）。直近7日の日次変化の絶対値の平均は0.64%と小さく、採点期間 10/06→10/07 に FOMC などの日程も入らない見込みで、値幅は小さいと見る（P-09）。24時間の方向の根拠は無いので見送る（P-01, L-005）。position を変える理由もコストを上回る見込みも無いので前回どおり long（P-02, P-08）。（判断 2026-10-06-BTC、97時間前、確信度 None） 往復コストは約0.43%（板(Lightning)）。",
+      "rationale": "日足終値 約1,345万円は100日線（約1,133万円）の約19%上、50日線（約1,243万円）・20日線（約1,303万円）の上で、数週間の地合いは崩れていない（P-05, L-009 の既定は long）。直近7日の日次変化の絶対値の平均は0.64%と小さく、採点期間 10/06→10/07 に FOMC などの日程も入らない見込みで、値幅は小さいと見る（P-09）。24時間の方向の根拠は無いので見送る（P-01, L-005）。position を変える理由もコストを上回る見込みも無いので前回どおり long（P-02, P-08）。（判断 2026-10-06-BTC、106時間前、確信度 None） 往復コストは約0.42%（板(Lightning)）。",
       "indicators": {
-        "price": 13081131.0,
+        "price": 13094491.0,
         "call_id": "2026-10-06-BTC",
         "position": "long",
         "outlook": "flat",
         "confidence": null,
-        "age_hours": 97.2,
+        "age_hours": 105.5,
         "playbook_refs": [
           "P-01",
           "P-02",
@@ -829,7 +830,7 @@
           "P-08",
           "P-09"
         ],
-        "cost_rate_pct": 0.21365325368272822,
+        "cost_rate_pct": 0.2118523125488421,
         "venue": "板(Lightning)"
       }
     },
@@ -838,14 +839,14 @@
       "strategy": "Claudeの判断",
       "signal": 1,
       "action": "保有継続",
-      "rationale": "日足終値 約42.5万円は100日線（約34.4万円）の約24%上、50日線（約39.3万円）・20日線（約41.6万円）の上で、地合いの既定は long（P-05, L-009）。直近8日の終値は42.1万〜42.7万円に収まり、7日の日次変化の平均は0.60%。採点期間に日程の決まった出来事も無い見込みで値幅は小さいと見る（P-09）。方向の根拠は無いので見送り、position は前回どおり long（P-01, P-02, P-08）。（判断 2026-10-06-ETH、97時間前、確信度 None） 往復コストは約0.49%（板(Lightning)）。",
+      "rationale": "日足終値 約42.5万円は100日線（約34.4万円）の約24%上、50日線（約39.3万円）・20日線（約41.6万円）の上で、地合いの既定は long（P-05, L-009）。直近8日の終値は42.1万〜42.7万円に収まり、7日の日次変化の平均は0.60%。採点期間に日程の決まった出来事も無い見込みで値幅は小さいと見る（P-09）。方向の根拠は無いので見送り、position は前回どおり long（P-01, P-02, P-08）。（判断 2026-10-06-ETH、106時間前、確信度 None） 往復コストは約0.44%（板(Lightning)）。",
       "indicators": {
-        "price": 393447.0,
+        "price": 394893.5,
         "call_id": "2026-10-06-ETH",
         "position": "long",
         "outlook": "flat",
         "confidence": null,
-        "age_hours": 97.2,
+        "age_hours": 105.5,
         "playbook_refs": [
           "P-01",
           "P-02",
@@ -853,7 +854,7 @@
           "P-08",
           "P-09"
         ],
-        "cost_rate_pct": 0.24320785264597264,
+        "cost_rate_pct": 0.2206384759435139,
         "venue": "板(Lightning)"
       }
     },
@@ -862,14 +863,14 @@
       "strategy": "Claudeの判断",
       "signal": 0,
       "action": "様子見",
-      "rationale": "BAT は 16.44円で100日線（約12.08円）の約36%上。50日線（約12.09円）が100日線をわずかに上回ったが差は0.1%で、交差したばかり。前回の反証条件（交差後も10月下旬まで100日線の上に定着し、往復5%超を上回る見込みを書けること）はまだ満たしていない。BAT は販売所のみで往復5%超の可能性があり、日々の値動きを理由に売買しない（B-01, P-08, L-006）。L-009 の既定どおり flat。7日の日次変化の平均は3.66%と大きく、方向の根拠も無いので見送る（P-01, P-04）。（判断 2026-10-06-BAT、97時間前、確信度 None） 往復コストは約4.00%（販売所）。",
+      "rationale": "BAT は 16.44円で100日線（約12.08円）の約36%上。50日線（約12.09円）が100日線をわずかに上回ったが差は0.1%で、交差したばかり。前回の反証条件（交差後も10月下旬まで100日線の上に定着し、往復5%超を上回る見込みを書けること）はまだ満たしていない。BAT は販売所のみで往復5%超の可能性があり、日々の値動きを理由に売買しない（B-01, P-08, L-006）。L-009 の既定どおり flat。7日の日次変化の平均は3.66%と大きく、方向の根拠も無いので見送る（P-01, P-04）。（判断 2026-10-06-BAT、106時間前、確信度 None） 往復コストは約4.00%（販売所）。",
       "indicators": {
-        "price": 21.38,
+        "price": 21.97,
         "call_id": "2026-10-06-BAT",
         "position": "flat",
         "outlook": "flat",
         "confidence": null,
-        "age_hours": 97.2,
+        "age_hours": 105.5,
         "playbook_refs": [
           "P-01",
           "P-04",
@@ -884,24 +885,7 @@
       }
     }
   ],
-  "trades": [
-    {
-      "run_id": 89,
-      "account_id": 2,
-      "symbol": "BTC",
-      "strategy": "SMA 5/20 クロス",
-      "side": "sell",
-      "price": 13081131.0,
-      "qty": 0.07505793660473507,
-      "gross": 981842.7013162347,
-      "cost": 2097.7388774085266,
-      "cash_after": 979744.9624388261,
-      "qty_after": 0.0,
-      "realized_pnl": 4183.9841329847695,
-      "venue": "板(Lightning)",
-      "ts": "2026-10-10T02:26:25.887245+09:00"
-    }
-  ],
+  "trades": [],
   "standings": [
     {
       "symbol": "BAT",
@@ -909,8 +893,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 85923.9401281985,
-      "equity": 1837053.839940884,
-      "total_return": 0.837053839940884,
+      "equity": 1887748.964616521,
+      "total_return": 0.8877489646165211,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 19607.843137255055
@@ -921,8 +905,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 85923.9401281985,
-      "equity": 1837053.839940884,
-      "total_return": 0.837053839940884,
+      "equity": 1887748.964616521,
+      "total_return": 0.8877489646165211,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 19607.843137255055
@@ -933,8 +917,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 85923.9401281985,
-      "equity": 1837053.839940884,
-      "total_return": 0.837053839940884,
+      "equity": 1887748.964616521,
+      "total_return": 0.8877489646165211,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 19607.843137255055
@@ -945,8 +929,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 77350.16893419475,
-      "equity": 1653746.6118130838,
-      "total_return": 0.6537466118130837,
+      "equity": 1699383.2114842585,
+      "total_return": 0.6993832114842586,
       "n_trades": 3,
       "realized_pnl": -86370.74461686518,
       "cost_paid": 56167.63727023364
@@ -957,8 +941,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 74045.59499907443,
-      "equity": 1583094.821080211,
-      "total_return": 0.5830948210802112,
+      "equity": 1626781.722129665,
+      "total_return": 0.626781722129665,
       "n_trades": 3,
       "realized_pnl": -74800.29048656498,
       "cost_paid": 56630.640636792145
@@ -969,8 +953,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 69679.61313878786,
-      "equity": 1489750.1289072842,
-      "total_return": 0.4897501289072843,
+      "equity": 1530861.100659169,
+      "total_return": 0.530861100659169,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 19607.843137254822
@@ -981,8 +965,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 64308.09200712316,
-      "equity": 1374907.007112293,
-      "total_return": 0.3749070071122931,
+      "equity": 1412848.7813964956,
+      "total_return": 0.4128487813964956,
       "n_trades": 9,
       "realized_pnl": 58691.25709486753,
       "cost_paid": 169072.85259745986
@@ -993,8 +977,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 57568.53534132383,
-      "equity": 1230815.2855975034,
-      "total_return": 0.23081528559750342,
+      "equity": 1264780.7214488846,
+      "total_return": 0.26478072144888465,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 19607.843137255055
@@ -1017,8 +1001,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 0.0831118878100612,
-      "equity": 1087197.4921007135,
-      "total_return": 0.08719749210071348,
+      "equity": 1088307.866921856,
+      "total_return": 0.088307866921856,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2112.173851175583
@@ -1029,8 +1013,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 0.0831118878100612,
-      "equity": 1087197.4921007135,
-      "total_return": 0.08719749210071348,
+      "equity": 1088307.866921856,
+      "total_return": 0.088307866921856,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2112.173851175583
@@ -1041,8 +1025,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 0.0831118878100612,
-      "equity": 1087197.4921007135,
-      "total_return": 0.08719749210071348,
+      "equity": 1088307.866921856,
+      "total_return": 0.088307866921856,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2112.173851175583
@@ -1053,8 +1037,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 0.0831118878100612,
-      "equity": 1087197.4921007135,
-      "total_return": 0.08719749210071348,
+      "equity": 1088307.866921856,
+      "total_return": 0.088307866921856,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2112.173851175583
@@ -1065,8 +1049,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 0.0831118878100612,
-      "equity": 1087197.4921007135,
-      "total_return": 0.08719749210071348,
+      "equity": 1088307.866921856,
+      "total_return": 0.088307866921856,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2112.173851175583
@@ -1077,8 +1061,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 2.633889714265056,
-      "equity": 1036296.0064084434,
-      "total_return": 0.03629600640844344,
+      "equity": 1040105.9278801279,
+      "total_return": 0.0401059278801279,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2258.871228968492
@@ -1089,8 +1073,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 2.633889714265056,
-      "equity": 1036296.0064084434,
-      "total_return": 0.03629600640844344,
+      "equity": 1040105.9278801279,
+      "total_return": 0.0401059278801279,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2258.871228968492
@@ -1101,8 +1085,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 2.633889714265056,
-      "equity": 1036296.0064084434,
-      "total_return": 0.03629600640844344,
+      "equity": 1040105.9278801279,
+      "total_return": 0.0401059278801279,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2258.871228968492
@@ -1113,8 +1097,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 2.633889714265056,
-      "equity": 1036296.0064084434,
-      "total_return": 0.03629600640844344,
+      "equity": 1040105.9278801279,
+      "total_return": 0.0401059278801279,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2258.871228968492
@@ -1125,8 +1109,8 @@
       "holding": true,
       "cash": 0.0,
       "qty": 2.633889714265056,
-      "equity": 1036296.0064084434,
-      "total_return": 0.03629600640844344,
+      "equity": 1040105.9278801279,
+      "total_return": 0.0401059278801279,
       "n_trades": 1,
       "realized_pnl": 0.0,
       "cost_paid": 2258.871228968492
@@ -1228,6 +1212,18 @@
       "cost_paid": 9680.664449533726
     },
     {
+      "symbol": "BTC",
+      "strategy": "Claudeの判断",
+      "holding": true,
+      "cash": 0.0,
+      "qty": 0.07383314015226922,
+      "equity": 966807.3892256279,
+      "total_return": -0.03319261077437208,
+      "n_trades": 1,
+      "realized_pnl": 0.0,
+      "cost_paid": 2126.8002233237494
+    },
+    {
       "symbol": "ETH",
       "strategy": "SMA 5/20 クロス",
       "holding": false,
@@ -1240,25 +1236,13 @@
       "cost_paid": 9230.030241012173
     },
     {
-      "symbol": "BTC",
-      "strategy": "Claudeの判断",
-      "holding": true,
-      "cash": 0.0,
-      "qty": 0.07383314015226922,
-      "equity": 965820.9784731936,
-      "total_return": -0.03417902152680641,
-      "n_trades": 1,
-      "realized_pnl": 0.0,
-      "cost_paid": 2126.8002233237494
-    },
-    {
       "symbol": "ETH",
       "strategy": "Claudeの判断",
       "holding": true,
       "cash": 0.0,
       "qty": 2.213309329608769,
-      "equity": 870819.9158065813,
-      "total_return": -0.12918008419341875,
+      "equity": 874021.4677518604,
+      "total_return": -0.1259785322481396,
       "n_trades": 3,
       "realized_pnl": -39000.181090149796,
       "cost_paid": 7383.119003135786
@@ -1266,301 +1250,301 @@
   ],
   "backtests": [
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "買い持ち(Buy&Hold)",
-      "days": 366,
-      "total_return": -0.23791077191606824,
-      "max_drawdown": -0.45713805447823075,
-      "sharpe": -0.39846067782845646,
+      "days": 365,
+      "total_return": -0.2249878103421341,
+      "max_drawdown": -0.45713805447823064,
+      "sharpe": -0.3603451334875471,
       "n_trades": 1,
-      "cost_paid": 3763.69214072892
+      "cost_paid": 3759.4114677363073
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "SMA 5/20 クロス",
-      "days": 366,
-      "total_return": -0.07732941704064655,
-      "max_drawdown": -0.158454963183026,
-      "sharpe": -0.1791694185773937,
+      "days": 365,
+      "total_return": -0.0627611928550379,
+      "max_drawdown": -0.15833370805362645,
+      "sharpe": -0.11871249921313379,
       "n_trades": 10,
-      "cost_paid": 40454.85190187315
+      "cost_paid": 40669.91386129513
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "SMA 20/50 クロス",
-      "days": 366,
-      "total_return": -0.16475661784836426,
-      "max_drawdown": -0.2960271769373889,
-      "sharpe": -0.6046841574683228,
+      "days": 365,
+      "total_return": -0.16378309833993365,
+      "max_drawdown": -0.2959511036661685,
+      "sharpe": -0.5980027446782274,
       "n_trades": 4,
-      "cost_paid": 14400.619671063978
+      "cost_paid": 14282.048947398882
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "SMA 50/100 クロス",
-      "days": 366,
-      "total_return": -0.1024779482631537,
-      "max_drawdown": -0.24838932258441826,
-      "sharpe": -0.4825245864956959,
+      "days": 365,
+      "total_return": -0.10149656842921828,
+      "max_drawdown": -0.24836224984260236,
+      "sharpe": -0.47354256199728223,
       "n_trades": 2,
-      "cost_paid": 7721.785705728628
+      "cost_paid": 7658.914506380968
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "100日線より上で保有",
-      "days": 366,
-      "total_return": -0.014503977377315569,
-      "max_drawdown": -0.17595227806977531,
-      "sharpe": 0.022426692896568096,
-      "n_trades": 3,
-      "cost_paid": 12198.456275866543
+      "days": 365,
+      "total_return": 0.002400280011322975,
+      "max_drawdown": -0.17592259617209827,
+      "sharpe": 0.10949921467684673,
+      "n_trades": 2,
+      "cost_paid": 8021.152402425614
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "RSI14 逆張り(30/70)",
-      "days": 366,
-      "total_return": -0.1423372787364312,
-      "max_drawdown": -0.31369845264629337,
-      "sharpe": -0.1939153764456412,
+      "days": 365,
+      "total_return": -0.08403711626192722,
+      "max_drawdown": -0.26558091518609395,
+      "sharpe": -0.033799079051698495,
       "n_trades": 2,
-      "cost_paid": 7761.057057394782
+      "cost_paid": 8074.909771741135
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "ドンチャン 20/10 ブレイク",
-      "days": 366,
-      "total_return": 0.08584002263399348,
-      "max_drawdown": -0.1283644234106256,
-      "sharpe": 0.4719624887826409,
+      "days": 365,
+      "total_return": 0.08718394123690221,
+      "max_drawdown": -0.12833302741582164,
+      "sharpe": 0.47706636042992073,
       "n_trades": 6,
-      "cost_paid": 26113.177391263318
+      "cost_paid": 25898.25011061655
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "3か月モメンタム",
-      "days": 366,
-      "total_return": -0.12110376932349576,
-      "max_drawdown": -0.24207531819477968,
-      "sharpe": -0.6763409734660873,
+      "days": 365,
+      "total_return": -0.1201427555687492,
+      "max_drawdown": -0.24204801802483433,
+      "sharpe": -0.6649564011648679,
       "n_trades": 2,
-      "cost_paid": 7546.748796411342
+      "cost_paid": 7485.305689634526
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BTC",
       "strategy": "MACD 12/26/9",
-      "days": 366,
-      "total_return": 0.2435516615612976,
-      "max_drawdown": -0.1443997544566603,
-      "sharpe": 0.9053648435586685,
+      "days": 365,
+      "total_return": 0.24404446534631896,
+      "max_drawdown": -0.14424565131537315,
+      "sharpe": 0.9079976385433334,
       "n_trades": 11,
-      "cost_paid": 47217.20651389241
+      "cost_paid": 46828.70963458251
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "買い持ち(Buy&Hold)",
-      "days": 366,
-      "total_return": -0.3259131486981297,
+      "days": 365,
+      "total_return": -0.30998422617057375,
       "max_drawdown": -0.6097013156960851,
-      "sharpe": -0.33253808902477827,
+      "sharpe": -0.2947925787566311,
       "n_trades": 1,
-      "cost_paid": 4069.6069760127466
+      "cost_paid": 3727.3341470832697
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "SMA 5/20 クロス",
-      "days": 366,
-      "total_return": -0.02425804649604646,
-      "max_drawdown": -0.2461250957728658,
-      "sharpe": 0.12231406132283039,
+      "days": 365,
+      "total_return": 0.00898267349982751,
+      "max_drawdown": -0.24442171644600508,
+      "sharpe": 0.21005984063432268,
       "n_trades": 9,
-      "cost_paid": 39479.639724315806
+      "cost_paid": 36776.12908337084
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "SMA 20/50 クロス",
-      "days": 366,
-      "total_return": -0.05383366569025794,
-      "max_drawdown": -0.36655032990005354,
-      "sharpe": 0.039830899830139765,
+      "days": 365,
+      "total_return": -0.04906825251232749,
+      "max_drawdown": -0.36626433253300883,
+      "sharpe": 0.05387605259836712,
       "n_trades": 3,
-      "cost_paid": 11804.879648764894
+      "cost_paid": 10724.292180724515
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "SMA 50/100 クロス",
-      "days": 366,
-      "total_return": -0.2281832692992216,
+      "days": 365,
+      "total_return": -0.22464604245357078,
       "max_drawdown": -0.32513550757000087,
-      "sharpe": -0.9256134186940929,
+      "sharpe": -0.9026813130371327,
       "n_trades": 2,
-      "cost_paid": 7852.165358583781
+      "cost_paid": 7132.874118584354
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "100日線より上で保有",
-      "days": 366,
-      "total_return": 0.020091819428174285,
-      "max_drawdown": -0.2053157861268966,
-      "sharpe": 0.20516676810674203,
+      "days": 365,
+      "total_return": 0.0318014789336345,
+      "max_drawdown": -0.19931908871711057,
+      "sharpe": 0.24671222814327345,
       "n_trades": 6,
-      "cost_paid": 25279.71157039244
+      "cost_paid": 23077.567078290107
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "RSI14 逆張り(30/70)",
-      "days": 366,
-      "total_return": -0.3883883536413123,
-      "max_drawdown": -0.6039634429227676,
-      "sharpe": -0.5649162438140689,
+      "days": 365,
+      "total_return": -0.2976476756321891,
+      "max_drawdown": -0.5440122335594906,
+      "sharpe": -0.3537063827613471,
       "n_trades": 1,
-      "cost_paid": 3917.2919294803332
+      "cost_paid": 3754.613512952264
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "ドンチャン 20/10 ブレイク",
-      "days": 366,
-      "total_return": 0.0006276145366119756,
-      "max_drawdown": -0.168201651948218,
-      "sharpe": 0.15225092788264563,
+      "days": 365,
+      "total_return": 0.003794327720605395,
+      "max_drawdown": -0.16726289444116027,
+      "sharpe": 0.16288214739665333,
       "n_trades": 7,
-      "cost_paid": 31675.071004155572
+      "cost_paid": 28781.833815468002
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "3か月モメンタム",
-      "days": 366,
-      "total_return": -0.16321603669084728,
-      "max_drawdown": -0.22593176676554394,
-      "sharpe": -0.7655546251783513,
+      "days": 365,
+      "total_return": -0.1593810657951792,
+      "max_drawdown": -0.22558228126248436,
+      "sharpe": -0.7377013538081663,
       "n_trades": 2,
-      "cost_paid": 8308.894757145403
+      "cost_paid": 7547.9674176727185
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "ETH",
       "strategy": "MACD 12/26/9",
-      "days": 366,
-      "total_return": 0.21409752928287795,
-      "max_drawdown": -0.20357063670181375,
-      "sharpe": 0.6961111023170258,
+      "days": 365,
+      "total_return": 0.2174298616666528,
+      "max_drawdown": -0.2024914054708299,
+      "sharpe": 0.7043068822397315,
       "n_trades": 9,
-      "cost_paid": 44375.83619178913
+      "cost_paid": 40306.95752333488
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "買い持ち(Buy&Hold)",
-      "days": 366,
-      "total_return": 0.009689037640048692,
+      "days": 365,
+      "total_return": 0.007761074085229858,
       "max_drawdown": -0.7924299626648488,
-      "sharpe": 0.46483294791476637,
+      "sharpe": 0.4731494648612512,
       "n_trades": 1,
-      "cost_paid": 40213.74186460284
+      "cost_paid": 40174.39566960653
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "SMA 5/20 クロス",
-      "days": 366,
-      "total_return": -0.5876275498812302,
+      "days": 365,
+      "total_return": -0.5762477675814139,
       "max_drawdown": -0.8151718580753202,
-      "sharpe": -1.1552099015191697,
+      "sharpe": -0.9824951955927524,
       "n_trades": 13,
-      "cost_paid": 275002.49233891454
+      "cost_paid": 275234.7327940129
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "SMA 20/50 クロス",
-      "days": 366,
-      "total_return": 0.2803467824615513,
+      "days": 365,
+      "total_return": 0.34484926750938394,
       "max_drawdown": -0.33505952847232445,
-      "sharpe": 0.7276109606364863,
+      "sharpe": 0.781828344495213,
       "n_trades": 3,
-      "cost_paid": 105887.40165427889
+      "cost_paid": 108537.3772813886
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "SMA 50/100 クロス",
-      "days": 366,
-      "total_return": -0.4305020183402839,
-      "max_drawdown": -0.5752869593894298,
-      "sharpe": -1.386753798899215,
+      "days": 365,
+      "total_return": -0.3823341847805416,
+      "max_drawdown": -0.554335357163998,
+      "sharpe": -0.8913963236062268,
       "n_trades": 3,
-      "cost_paid": 73034.10379967309
+      "cost_paid": 76335.28225602965
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "100日線より上で保有",
-      "days": 366,
-      "total_return": 0.03811705813054278,
+      "days": 365,
+      "total_return": 0.06676481604901907,
       "max_drawdown": -0.3792017965977935,
-      "sharpe": 0.2757419697925308,
+      "sharpe": 0.34383123654930636,
       "n_trades": 4,
-      "cost_paid": 143039.2021399931
+      "cost_paid": 143623.85026077833
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "RSI14 逆張り(30/70)",
-      "days": 366,
-      "total_return": -0.4891914976267653,
-      "max_drawdown": -0.7924299626648488,
-      "sharpe": -0.41841479617562044,
+      "days": 365,
+      "total_return": -0.4090554099406035,
+      "max_drawdown": -0.6062192842433736,
+      "sharpe": -0.5936987579545367,
       "n_trades": 1,
-      "cost_paid": 30032.50645099439
+      "cost_paid": 31667.93681193646
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "ドンチャン 20/10 ブレイク",
-      "days": 366,
-      "total_return": -0.5955693419577766,
+      "days": 365,
+      "total_return": -0.5844087204308863,
       "max_drawdown": -0.7950839159380727,
-      "sharpe": -1.3842778367366624,
+      "sharpe": -1.1626752134476115,
       "n_trades": 8,
-      "cost_paid": 153937.75089590243
+      "cost_paid": 154165.51868216548
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "3か月モメンタム",
-      "days": 366,
-      "total_return": -0.31622151971147283,
-      "max_drawdown": -0.5486543701545261,
-      "sharpe": -0.9470403192600398,
+      "days": 365,
+      "total_return": -0.28587912584955943,
+      "max_drawdown": -0.541284743162103,
+      "sharpe": -0.5924543555734211,
       "n_trades": 5,
-      "cost_paid": 137175.26659225224
+      "cost_paid": 139486.30102688988
     },
     {
-      "run_id": 89,
+      "run_id": 90,
       "symbol": "BAT",
       "strategy": "MACD 12/26/9",
-      "days": 366,
-      "total_return": -0.6331662767764903,
-      "max_drawdown": -0.8507561143816965,
-      "sharpe": -1.1666797130011004,
-      "n_trades": 15,
-      "cost_paid": 336669.627578442
+      "days": 365,
+      "total_return": -0.6877542069471076,
+      "max_drawdown": -0.8631436700810957,
+      "sharpe": -1.3127231556099574,
+      "n_trades": 14,
+      "cost_paid": 250962.50217164113
     }
   ]
 }
