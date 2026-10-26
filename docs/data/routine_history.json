@@ -9985,5 +9985,79 @@
         "cost_paid": 56630.640636792145
       }
     ]
+  },
+  {
+    "ran_at": "2026-10-27T02:21:59.648109+09:00",
+    "slot": "evening",
+    "run_id": 140,
+    "prices": {
+      "BTC": 12643879.0,
+      "ETH": 367014.5,
+      "BAT": 22.34
+    },
+    "n_trades": 1,
+    "summary": "晩のルーティン: 3銘柄 × 9戦略を判定＋Claudeの判断3銘柄、1件約定、ニュース17件。首位は BAT ドンチャン 20/10 ブレイク (+98.07%)",
+    "standings": [
+      {
+        "symbol": "BAT",
+        "strategy": "ドンチャン 20/10 ブレイク",
+        "holding": false,
+        "cash": 1980736.7159654985,
+        "qty": 0.0,
+        "equity": 1980736.7159654985,
+        "total_return": 0.9807367159654985,
+        "n_trades": 4,
+        "realized_pnl": 980736.7159654987,
+        "cost_paid": 96590.8355552438
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "SMA 20/50 クロス",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 85923.9401281985,
+        "equity": 1919540.8224639546,
+        "total_return": 0.9195408224639545,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 19607.843137255055
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "買い持ち(Buy&Hold)",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 85923.9401281985,
+        "equity": 1919540.8224639546,
+        "total_return": 0.9195408224639545,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 19607.843137255055
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "SMA 5/20 クロス",
+        "holding": false,
+        "cash": 1881150.0060146754,
+        "qty": 0.0,
+        "equity": 1881150.0060146754,
+        "total_return": 0.8811500060146753,
+        "n_trades": 2,
+        "realized_pnl": 881150.0060146755,
+        "cost_paid": 57998.659586534144
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "MACD 12/26/9",
+        "holding": false,
+        "cash": 1666299.8336149696,
+        "qty": 0.0,
+        "equity": 1666299.8336149696,
+        "total_return": 0.6662998336149697,
+        "n_trades": 10,
+        "realized_pnl": 666299.8336149699,
+        "cost_paid": 203078.9716508266
+      }
+    ]
   }
 ]
