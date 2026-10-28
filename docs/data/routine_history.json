@@ -10281,5 +10281,79 @@
         "cost_paid": 56630.640636792145
       }
     ]
+  },
+  {
+    "ran_at": "2026-10-28T10:20:06.107037+09:00",
+    "slot": "morning",
+    "run_id": 144,
+    "prices": {
+      "BTC": 12727585.0,
+      "ETH": 370028.5,
+      "BAT": 23.05
+    },
+    "n_trades": 1,
+    "summary": "朝のルーティン: 3銘柄 × 9戦略を判定＋Claudeの判断3銘柄、1件約定、ニュース20件。首位は BAT ドンチャン 20/10 ブレイク (+98.07%)",
+    "standings": [
+      {
+        "symbol": "BAT",
+        "strategy": "ドンチャン 20/10 ブレイク",
+        "holding": false,
+        "cash": 1980736.7159654985,
+        "qty": 0.0,
+        "equity": 1980736.7159654985,
+        "total_return": 0.9807367159654985,
+        "n_trades": 4,
+        "realized_pnl": 980736.7159654987,
+        "cost_paid": 96590.8355552438
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "SMA 20/50 クロス",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 85923.9401281985,
+        "equity": 1980546.8199549755,
+        "total_return": 0.9805468199549756,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 19607.843137255055
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "買い持ち(Buy&Hold)",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 85923.9401281985,
+        "equity": 1980546.8199549755,
+        "total_return": 0.9805468199549756,
+        "n_trades": 1,
+        "realized_pnl": 0.0,
+        "cost_paid": 19607.843137255055
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "SMA 5/20 クロス",
+        "holding": false,
+        "cash": 1881150.0060146754,
+        "qty": 0.0,
+        "equity": 1881150.0060146754,
+        "total_return": 0.8811500060146753,
+        "n_trades": 2,
+        "realized_pnl": 881150.0060146755,
+        "cost_paid": 57998.659586534144
+      },
+      {
+        "symbol": "BAT",
+        "strategy": "100日線より上で保有",
+        "holding": true,
+        "cash": 0.0,
+        "qty": 74045.59499907443,
+        "equity": 1706750.9647286655,
+        "total_return": 0.7067509647286656,
+        "n_trades": 3,
+        "realized_pnl": -74800.29048656498,
+        "cost_paid": 56630.640636792145
+      }
+    ]
   }
 ]
