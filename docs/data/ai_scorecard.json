@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-12T03:41:34.250493+09:00",
+  "generated_at": "2026-11-12T11:58:16.991094+09:00",
   "rules": {
     "flat_band": 0.005,
     "horizon_tolerance_h": 3.0,
@@ -61,8 +61,8 @@
       "return": -0.13959251331651723,
       "n_trades": 2,
       "cost_paid": 4015.5237142310243,
-      "buy_and_hold_same_period": 0.0028554310467754362,
-      "rules_median_same_period": 0.0028554310467754362,
+      "buy_and_hold_same_period": -0.007791978918040621,
+      "rules_median_same_period": -0.007791978918040621,
       "rank": 10,
       "of": 10,
       "table": [
@@ -79,20 +79,20 @@
           "return": 0.009735986047187728
         },
         {
+          "strategy": "RSI14 逆張り(30/70)",
+          "return": 0.0
+        },
+        {
           "strategy": "買い持ち(Buy&Hold)",
-          "return": 0.0028554310467754362
+          "return": -0.007791978918040621
         },
         {
           "strategy": "SMA 50/100 クロス",
-          "return": 0.0028554310467754362
+          "return": -0.007791978918040621
         },
         {
           "strategy": "3か月モメンタム",
-          "return": 0.0028554310467754362
-        },
-        {
-          "strategy": "RSI14 逆張り(30/70)",
-          "return": 0.0
+          "return": -0.007791978918040621
         },
         {
           "strategy": "MACD 12/26/9",
@@ -114,7 +114,7 @@
       "return": -0.18267589684869445,
       "n_trades": 4,
       "cost_paid": 9046.547122968565,
-      "buy_and_hold_same_period": -0.13711126200407409,
+      "buy_and_hold_same_period": -0.1503941539754906,
       "rules_median_same_period": -0.11255940721683344,
       "rank": 9,
       "of": 10,
@@ -141,15 +141,15 @@
         },
         {
           "strategy": "買い持ち(Buy&Hold)",
-          "return": -0.13711126200407409
+          "return": -0.1503941539754906
         },
         {
           "strategy": "SMA 50/100 クロス",
-          "return": -0.13711126200407409
+          "return": -0.1503941539754906
         },
         {
           "strategy": "3か月モメンタム",
-          "return": -0.13711126200407409
+          "return": -0.1503941539754906
         },
         {
           "strategy": "Claudeの判断",
@@ -167,8 +167,8 @@
       "return": 0.0,
       "n_trades": 0,
       "cost_paid": 0.0,
-      "buy_and_hold_same_period": 0.7728506787330316,
-      "rules_median_same_period": 0.7549982555273973,
+      "buy_and_hold_same_period": 0.7013574660633484,
+      "rules_median_same_period": 0.7013574660633484,
       "rank": 10,
       "of": 10,
       "table": [
@@ -181,24 +181,24 @@
           "return": 0.9812850678733029
         },
         {
-          "strategy": "買い持ち(Buy&Hold)",
-          "return": 0.7728506787330316
-        },
-        {
-          "strategy": "SMA 20/50 クロス",
-          "return": 0.7728506787330316
-        },
-        {
           "strategy": "MACD 12/26/9",
           "return": 0.7549982555273973
         },
         {
+          "strategy": "買い持ち(Buy&Hold)",
+          "return": 0.7013574660633484
+        },
+        {
+          "strategy": "SMA 20/50 クロス",
+          "return": 0.7013574660633484
+        },
+        {
           "strategy": "100日線より上で保有",
-          "return": 0.450553206031868
+          "return": 0.3920571859825994
         },
         {
           "strategy": "3か月モメンタム",
-          "return": 0.365023621388854
+          "return": 0.30997672700921175
         },
         {
           "strategy": "RSI14 逆張り(30/70)",
@@ -206,7 +206,7 @@
         },
         {
           "strategy": "SMA 50/100 クロス",
-          "return": 0.12776760733653392
+          "return": 0.08228846441688797
         },
         {
           "strategy": "Claudeの判断",
