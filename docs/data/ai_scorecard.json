@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-26T05:28:38.551871+09:00",
+  "generated_at": "2026-11-26T13:09:09.686979+09:00",
   "rules": {
     "flat_band": 0.005,
     "horizon_tolerance_h": 3.0,
@@ -61,9 +61,9 @@
       "return": -0.13959251331651723,
       "n_trades": 2,
       "cost_paid": 4015.5237142310243,
-      "buy_and_hold_same_period": -0.19799276130715793,
+      "buy_and_hold_same_period": -0.18402816092246788,
       "rules_median_same_period": -0.02025503756117386,
-      "rank": 6,
+      "rank": 7,
       "of": 10,
       "table": [
         {
@@ -87,20 +87,20 @@
           "return": -0.02025503756117386
         },
         {
+          "strategy": "RSI14 逆張り(30/70)",
+          "return": -0.1271457850013603
+        },
+        {
           "strategy": "Claudeの判断",
           "return": -0.13959251331651723
         },
         {
-          "strategy": "RSI14 逆張り(30/70)",
-          "return": -0.1420838744338685
+          "strategy": "買い持ち(Buy&Hold)",
+          "return": -0.18402816092246788
         },
         {
           "strategy": "3か月モメンタム",
           "return": -0.19338611706375575
-        },
-        {
-          "strategy": "買い持ち(Buy&Hold)",
-          "return": -0.19799276130715793
         },
         {
           "strategy": "SMA 50/100 クロス",
@@ -114,8 +114,8 @@
       "return": -0.18267589684869445,
       "n_trades": 4,
       "cost_paid": 9046.547122968565,
-      "buy_and_hold_same_period": -0.30743751414621534,
-      "rules_median_same_period": -0.14161713010679178,
+      "buy_and_hold_same_period": -0.29992175122061626,
+      "rules_median_same_period": -0.1323018664572463,
       "rank": 6,
       "of": 10,
       "table": [
@@ -137,7 +137,7 @@
         },
         {
           "strategy": "RSI14 逆張り(30/70)",
-          "return": -0.14161713010679178
+          "return": -0.1323018664572463
         },
         {
           "strategy": "Claudeの判断",
@@ -157,7 +157,7 @@
         },
         {
           "strategy": "買い持ち(Buy&Hold)",
-          "return": -0.30743751414621534
+          "return": -0.29992175122061626
         }
       ]
     },
@@ -167,8 +167,8 @@
       "return": 0.0,
       "n_trades": 0,
       "cost_paid": 0.0,
-      "buy_and_hold_same_period": 0.10226244343891389,
-      "rules_median_same_period": 0.2910961027412293,
+      "buy_and_hold_same_period": 0.15113122171945692,
+      "rules_median_same_period": 0.32137008032274816,
       "rank": 8,
       "of": 10,
       "table": [
@@ -190,11 +190,11 @@
         },
         {
           "strategy": "RSI14 逆張り(30/70)",
-          "return": 0.2910961027412293
+          "return": 0.32137008032274816
         },
         {
           "strategy": "買い持ち(Buy&Hold)",
-          "return": 0.10226244343891389
+          "return": 0.15113122171945692
         },
         {
           "strategy": "100日線より上で保有",
@@ -206,11 +206,11 @@
         },
         {
           "strategy": "3か月モメンタム",
-          "return": -0.1513023119695639
+          "return": -0.11367532087461851
         },
         {
           "strategy": "SMA 50/100 クロス",
-          "return": -0.29881523954267564
+          "return": -0.2677282304583607
         }
       ]
     }
